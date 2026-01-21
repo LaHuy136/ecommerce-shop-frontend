@@ -13,6 +13,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import reportWebVitals from "./reportWebVitals";
 import MemberLayout from "./layouts/Layouts";
+import Shop from "./pages/products/Shop";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -20,7 +21,9 @@ root.render(
     <BrowserRouter>
       <AuthProvider>
         <App>
+          {/* <ScrollToTop> */}
           <Routes>
+            {/* PUBLIC */}
             <Route
               path="/"
               element={
@@ -29,7 +32,15 @@ root.render(
                 </MemberLayout>
               }
             />
-            {/* PUBLIC */}
+            <Route
+              path="/shop"
+              element={
+                <MemberLayout>
+                  <Shop />
+                </MemberLayout>
+              }
+            />
+
             <Route
               path="/login"
               element={
@@ -47,10 +58,8 @@ root.render(
                 </MemberLayout>
               }
             />
-            {/* <Route path="/account" element={<Account />} />
-          <Route path="/cart" element={<Cart />} />
-          <Route path="/checkout" element={<Checkout />} /> */}
           </Routes>
+          {/* </ScrollToTop> */}
         </App>
       </AuthProvider>
     </BrowserRouter>

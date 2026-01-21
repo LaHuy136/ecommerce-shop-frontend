@@ -191,17 +191,17 @@ function Header() {
                     </Link>
                   </li>
                   <li className="dropdown">
-                    <Link href="#">
+                    <Link to="/shop">
                       Shop<i className="fa fa-angle-down"></i>
                     </Link>
                     <ul role="menu" className="sub-menu">
                       <li>
                         <Link to="/shop">Products</Link>
                       </li>
-                      <li>
+                      {/* <li>
                         <Link to="/product-detail">Product Details</Link>
                       </li>
-                      <li>
+                     <li>
                         <Link to="/checkout">Checkout</Link>
                       </li>
                       <li>
@@ -209,7 +209,7 @@ function Header() {
                       </li>
                       <li>
                         <Link to="/login">Login</Link>
-                      </li>
+                      </li> */}
                     </ul>
                   </li>
                   <li className="dropdown">
@@ -218,19 +218,19 @@ function Header() {
                     </Link>
                     <ul role="menu" className="sub-menu">
                       <li>
-                        <Link href="#">Blog List</Link>
+                        <Link href="/blog">Blog List</Link>
                       </li>
-                      <li>
+                      {/* <li>
                         <Link href="#">Blog Single</Link>
-                      </li>
+                      </li> */}
                     </ul>
                   </li>
-                  <li>
+                  {/* <li>
                     <Link to="/404">404</Link>
                   </li>
                   <li>
                     <Link to="/contact-us">Contact us</Link>
-                  </li>
+                  </li> */}
                 </ul>
               </div>
             </div>
