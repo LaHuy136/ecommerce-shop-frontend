@@ -14,6 +14,8 @@ import Register from "./pages/Register";
 import reportWebVitals from "./reportWebVitals";
 import MemberLayout from "./layouts/Layouts";
 import Shop from "./pages/products/Shop";
+import Blog from "./pages/blogs/Index";
+import Show from "./pages/blogs/Show";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -32,6 +34,7 @@ root.render(
                 </MemberLayout>
               }
             />
+            {/* Shop */}
             <Route
               path="/shop"
               element={
@@ -41,6 +44,26 @@ root.render(
               }
             />
 
+            {/* Blogs */}
+            <Route
+              path="/blogs"
+              element={
+                <MemberLayout>
+                  <Blog />
+                </MemberLayout>
+              }
+            />
+
+            <Route
+              path="/blogs/:id"
+              element={
+                <MemberLayout>
+                  <Show />
+                </MemberLayout>
+              }
+            />
+
+            {/* Auth */}
             <Route
               path="/login"
               element={
