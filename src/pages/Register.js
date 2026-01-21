@@ -1,9 +1,10 @@
 import { useState } from "react";
 import RenderError from "../components/errors/RenderError";
 import { register } from "../api/auth";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import CountrySelect from "../components/selects/CountrySelect";
 function Register() {
+  const navigate = useNavigate();
   const [inputs, setInputs] = useState({
     email: "",
     password: "",
@@ -73,9 +74,9 @@ function Register() {
 
     try {
       const res = await register(formData);
-      console.log(res.data);
+      navigate("/login");
     } catch (error) {
-      console.log(error.response.data);
+      console.log(error?.response?.data);
     }
   };
 
