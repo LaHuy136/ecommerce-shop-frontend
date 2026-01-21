@@ -10,7 +10,12 @@ export const home = async (params = {}, page = 1) => {
   return res.data;
 };
 
-export const shop = async (params = {}) => {
-  const res = await axios.get("/shop", { params });
+export const shop = async (params = {}, page = 1) => {
+  const res = await axios.get("/shop", {
+    params: {
+      ...params,
+      page: page,
+    },
+  });
   return res.data;
 };

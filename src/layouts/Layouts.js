@@ -21,8 +21,6 @@ const Layout = ({ children }) => {
       await loadScript("/frontend/js/jquery.scrollUp.min.js");
       await loadScript("/frontend/js/price-range.js");
       await loadScript("/frontend/js/html5shiv.js");
-      await loadScript("/frontend/js/gmaps.js");
-      await loadScript("/frontend/js/contact.js");
       await loadScript("/frontend/js/main.js");
     };
 

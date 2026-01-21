@@ -1,10 +1,9 @@
 import { useState, useEffect } from "react";
-import { home } from "../api/products";
 import { Link, useSearchParams } from "react-router-dom";
-import shippingBanner from "../assets/images/home/shipping.jpg";
-function Home() {
-  const [featuredProducts, setFeaturedProducts] = useState([]);
-  const [recommendProducts, setRecommendProducts] = useState([]);
+import shippingBanner from "../../assets/images/home/shipping.jpg";
+import { shop } from "../../api/products";
+function Shop() {
+  const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
   const [brands, setBrands] = useState([]);
   const [pagination, setPagination] = useState(null);
@@ -14,16 +13,15 @@ function Home() {
 
   const fetchProducts = async (page = 1) => {
     try {
-      const response = await home({}, page);
+      const response = await shop({}, page);
 
-      setFeaturedProducts(response.featuredProducts.data);
-      setPagination(response.featuredProducts || []);
+      setProducts(response.products.data);
+      setPagination(response.products || []);
 
-      setRecommendProducts(response.recommendProducts || []);
       setCategories(response.categories || []);
       setBrands(response.brands || []);
     } catch (error) {
-      console.error("Fetch index products error:", error);
+      console.error("Fetch shop products error:", error);
     }
   };
 
@@ -106,7 +104,7 @@ function Home() {
         <div className="col-sm-9 padding-right">
           <div className="features_items">
             <h2 className="title text-center">Features Items</h2>
-            {featuredProducts.map((product) => (
+            {products.map((product) => (
               <div className="col-sm-4" key={product.id}>
                 <div className="product-image-wrapper">
                   <div className="single-products">
@@ -173,85 +171,10 @@ function Home() {
               </li>
             ))}
           </ul>
-
-          {/* Recommend Products */}
-          <div className="recommended_items">
-            <h2 className="title text-center">recommended items</h2>
-            <div
-              id="recommended-item-carousel"
-              className="carousel slide"
-              data-ride="carousel"
-            >
-              <div className="carousel-inner">
-                <div className="item active">
-                  {recommendProducts.map((product) => (
-                    <div className="col-sm-4" key={product.id}>
-                      <div className="product-image-wrapper">
-                        <div className="single-products">
-                          <div className="productinfo text-center">
-                            <img
-                              src={
-                                "http://ecommerce-shop.test/storage/products/full/" +
-                                product.images[0].image
-                              }
-                              alt="Product Image..."
-                            />
-                            <h2>${product.price}</h2>
-                            <p>{product.name}</p>
-                            <a href="#" className="btn btn-default add-to-cart">
-                              <i className="fa fa-shopping-cart"></i>Add to cart
-                            </a>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-                <div className="item">
-                  {recommendProducts.map((product) => (
-                    <div className="col-sm-4" key={product.id}>
-                      <div className="product-image-wrapper">
-                        <div className="single-products">
-                          <div className="productinfo text-center">
-                            <img
-                              src={
-                                "http://ecommerce-shop.test/storage/products/full/" +
-                                product.images[0].image
-                              }
-                              alt="Product Image..."
-                            />
-                            <h2>${product.price}</h2>
-                            <p>{product.name}</p>
-                            <a href="#" className="btn btn-default add-to-cart">
-                              <i className="fa fa-shopping-cart"></i>Add to cart
-                            </a>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-              <a
-                className="left recommended-item-control"
-                href="#recommended-item-carousel"
-                data-slide="prev"
-              >
-                <i className="fa fa-angle-left"></i>
-              </a>
-              <a
-                className="right recommended-item-control"
-                href="#recommended-item-carousel"
-                data-slide="next"
-              >
-                <i className="fa fa-angle-right"></i>
-              </a>
-            </div>
-          </div>
         </div>
       </div>
     </div>
   );
 }
 
-export default Home;
+export default Shop;
