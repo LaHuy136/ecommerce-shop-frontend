@@ -9,8 +9,7 @@ function Login() {
 
   useEffect(() => {
     if (user) {
-      if (user.level === 1) navigate("/admin/dashboard");
-      else navigate("/");
+      navigate("/");
     }
   }, [user]);
 
@@ -57,11 +56,7 @@ function Login() {
 
       login(res.user, res.token);
 
-      if (res.user.level === 1) {
-        navigate("/admin/dashboard");
-      } else {
-        navigate("/");
-      }
+      navigate("/");
     } catch (error) {
       console.log(error?.response?.data);
     }
@@ -81,7 +76,7 @@ function Login() {
         {<RenderError errors={errors} />}
         <form onSubmit={handleForm} method="POST">
           <div>
-            <label for="email">Email</label>
+            <label htmlFor="email">Email</label>
             <input
               type="email"
               name="email"
@@ -94,7 +89,7 @@ function Login() {
           <div>
             <div className="row justify-content-center">
               <div className="col-sm-9">
-                <label for="password">Password</label>
+                <label htmlFor="password">Password</label>
               </div>
               <div className="col-sm-3">
                 <a href="#" className="pull-right">
