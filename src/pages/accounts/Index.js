@@ -14,12 +14,13 @@ function Account() {
     password: "",
     password_confirmation: "",
     phone: "",
-    country: "",
+    country_id: "",
   };
 
   const {
     inputs,
     setInputs,
+    errors,
     setErrors,
     file,
     fileErr,
@@ -29,8 +30,8 @@ function Account() {
 
   const loadAccount = async () => {
     try {
-      const response = await index();
-      setAccount(response.data);
+      const res = await index();
+      setAccount(res.data);
     } catch (error) {
       console.error("Load profile error: ", error);
     }
@@ -39,41 +40,32 @@ function Account() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     let errorsSubmit = {};
-    let flag = true;
 
     if (!inputs.email) {
       errorsSubmit.email = "Please enter your email";
-      flag = false;
     } else if (!inputs.email.match(/@([\w.-]+)/)) {
       errorsSubmit.email = "Invalid email";
-      flag = false;
     }
 
     if (inputs.password) {
       if (inputs.password.length < 8) {
         errorsSubmit.password = "Length of password minimum is 8 characters";
-        flag = false;
       } else if (inputs.password !== inputs.password_confirmation) {
         errorsSubmit.password = "Password does not match";
-        flag = false;
       }
     }
 
-    if (!inputs.country) {
-      errorsSubmit.country = "Please select country";
-      flag = false;
-    }
-
-    if (!flag) {
+    if (Object.keys(errorsSubmit).length > 0) {
       setErrors(errorsSubmit);
       return;
     }
+
+    setErrors({});
 
     const formData = new FormData();
     formData.append("name", inputs.name);
     formData.append("email", inputs.email);
     formData.append("phone", inputs.phone);
-    formData.append("country_id", inputs.country);
 
     if (inputs.password) {
       formData.append("password", inputs.password);
@@ -84,13 +76,17 @@ function Account() {
       formData.append("avatar", file);
     }
 
+    if (inputs.country_id) {
+      formData.append("country_id", inputs.country_id);
+    }
+
     try {
       await update(account.id, formData);
       toast.success("Profile updated successfully");
 
       await loadAccount();
     } catch (error) {
-      toast.error("Failed to update profile: ", error);
+      toast.error("Failed to update profile");
     }
   };
 
@@ -104,12 +100,12 @@ function Account() {
     setInputs({
       email: account.email || "",
       name: account.name || "",
-      password: account.password || "",
-      password_confirmation: account.password_confirmation || "",
       phone: account.phone || "",
-      country: account.country_id || "",
+      country_id: account.country_id || "",
+      password: "",
+      password_confirmation: "",
     });
-  }, [account, setInputs]);
+  }, [account]);
 
   return (
     <section>
@@ -145,6 +141,7 @@ function Account() {
                 className="rounded-circle"
                 width="150"
                 height="auto"
+                alt="Avatar..."
               />
             </div>
           </div>
@@ -155,6 +152,7 @@ function Account() {
               <div className="signup-form">
                 <AccountForm
                   inputs={inputs}
+                  errors={errors}
                   handleInput={handleInput}
                   handleFile={handleFile}
                   fileErr={fileErr}

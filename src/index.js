@@ -2,6 +2,8 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext";
+import ProtectedRoute from "../src/components/ProtectedRoute";
+import GuestRoute from "../src/components/GuestRoute";
 import "./index.css";
 
 import App from "./App";
@@ -67,9 +69,11 @@ root.render(
             <Route
               path="/accounts"
               element={
-                <MemberLayout>
-                  <Account />
-                </MemberLayout>
+                <ProtectedRoute>
+                  <MemberLayout>
+                    <Account />
+                  </MemberLayout>
+                </ProtectedRoute>
               }
             />
 
@@ -77,9 +81,11 @@ root.render(
             <Route
               path="/login"
               element={
-                <MemberLayout>
-                  <Login />
-                </MemberLayout>
+                <GuestRoute>
+                  <MemberLayout>
+                    <Login />
+                  </MemberLayout>
+                </GuestRoute>
               }
             />
 

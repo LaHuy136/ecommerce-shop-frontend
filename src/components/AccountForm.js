@@ -5,6 +5,7 @@ function AccountForm({
   setInputs,
   handleInput,
   handleFile,
+  errors,
   fileErr,
   onSubmit,
   isRegister = true,
@@ -21,6 +22,7 @@ function AccountForm({
           className="form-control form-control-line"
           onChange={handleInput}
         />
+        {errors.name && <div className="invalid-feedback">{errors.name}</div>}
       </div>
 
       <div className="form-group">
@@ -33,6 +35,7 @@ function AccountForm({
           className="form-control form-control-line"
           onChange={handleInput}
         />
+        {errors.email && <div className="invalid-feedback">{errors.email}</div>}
       </div>
 
       <div className="form-group">
@@ -45,6 +48,9 @@ function AccountForm({
           className="form-control form-control-line"
           onChange={handleInput}
         />
+        {errors.password && (
+          <div className="invalid-feedback">{errors.password}</div>
+        )}
       </div>
 
       <div className="form-group">
@@ -87,11 +93,14 @@ function AccountForm({
           name="country_id"
           className="form-control form-control-line"
           onChange={handleInput}
-          value={inputs.country}
+          value={inputs.country_id || ""}
         >
           <option value="">-- Select country --</option>
           <CountrySelect />
         </select>
+        {errors.country && (
+          <div className="invalid-feedback">{errors.country}</div>
+        )}
       </div>
 
       <div className="form-group">
