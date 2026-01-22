@@ -6,7 +6,6 @@ import "./index.css";
 
 import App from "./App";
 import Home from "./pages/Index";
-import Account from "./pages/accounts/Account";
 import Cart from "./pages/carts/Cart";
 import Checkout from "./pages/carts/Checkout";
 import Login from "./pages/Login";
@@ -16,6 +15,7 @@ import MemberLayout from "./layouts/Layouts";
 import Shop from "./pages/products/Shop";
 import Blog from "./pages/blogs/Index";
 import Show from "./pages/blogs/Show";
+import Account from "./pages/accounts/Index";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -59,6 +59,16 @@ root.render(
               element={
                 <MemberLayout>
                   <Show />
+                </MemberLayout>
+              }
+            />
+
+            {/* Accounts */}
+            <Route
+              path="/accounts"
+              element={
+                <MemberLayout>
+                  <Account />
                 </MemberLayout>
               }
             />
