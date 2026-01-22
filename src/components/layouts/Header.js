@@ -4,7 +4,6 @@ import { useAuth } from "../../context/AuthContext";
 function Header() {
   const isLogin = !!localStorage.getItem("user");
   const { logout } = useAuth();
-  const navigate = useNavigate();
   return (
     <header id="header">
       <div className="header_top">
@@ -115,7 +114,7 @@ function Header() {
                 <ul className="nav navbar-nav">
                   {isLogin && (
                     <li>
-                      <Link to="/account">
+                      <Link to="/accounts">
                         <i className="fa fa-user"></i> Account
                       </Link>
                     </li>
@@ -147,16 +146,13 @@ function Header() {
                     </li>
                   ) : (
                     <li>
-                      <button
-                        // to="/login"
-                        onClick={(e) => {
-                          navigate("/login");
-                          e.preventDefault();
-                          logout();
-                        }}
+                      <Link
+                        to="/login"
+                        onClick={logout}
+                        className="btn btn-link"
                       >
                         <i className="fa fa-sign-out"></i> Logout
-                      </button>
+                      </Link>
                     </li>
                   )}
                 </ul>
