@@ -3,15 +3,10 @@ import { Link, useNavigate } from "react-router-dom";
 import RenderError from "../components/errors/RenderError";
 import { login as loginApi } from "../api/auth";
 import { useAuth } from "../context/AuthContext";
+import { toast } from "react-toastify";
 function Login() {
   const navigate = useNavigate();
-  const { login, user } = useAuth();
-
-  useEffect(() => {
-    if (user) {
-      navigate("/");
-    }
-  }, [user]);
+  const { login } = useAuth();
 
   const [inputs, setInputs] = useState({
     email: "",
@@ -25,27 +20,30 @@ function Login() {
     const valueInput = e.target.value;
     setInputs((state) => ({ ...state, [nameInput]: valueInput }));
   };
+
   const handleForm = async (e) => {
     e.preventDefault();
+
     let errorsSubmit = {};
-    let flag = true;
-    if (inputs.email == "") {
+
+    if (!inputs.email) {
       errorsSubmit.email = "Please enter your email";
-      flag = false;
     } else if (!inputs.email.match(/@([\w.-]+)/)) {
       errorsSubmit.email = "Invalid email";
-      flag = false;
     }
 
-    if (inputs.password == "") {
+    if (!inputs.password) {
       errorsSubmit.password = "Please enter your password";
-      flag = false;
+    } else if (inputs.password.length < 8) {
+      errorsSubmit.password = "Password must be at least 8 characters";
     }
 
-    if (!flag) {
+    if (Object.keys(errorsSubmit).length > 0) {
       setErrors(errorsSubmit);
       return;
     }
+
+    setErrors({});
 
     const formData = new FormData();
     formData.append("email", inputs.email);
@@ -56,9 +54,15 @@ function Login() {
 
       login(res.user, res.token);
 
-      navigate("/");
+      toast.success("Login successfully");
+      navigate("/", { replace: true });
     } catch (error) {
-      console.log(error?.response?.data);
+      const message =
+        error?.response?.data?.errors?.error ||
+        error?.response?.data?.message ||
+        "Login failed";
+
+      toast.error(message);
     }
   };
 
@@ -73,18 +77,20 @@ function Login() {
             <li className="active">Login</li>
           </ol>
         </div>
-        {<RenderError errors={errors} />}
-        <form onSubmit={handleForm} method="POST">
+        <form onSubmit={handleForm}>
           <div>
             <label htmlFor="email">Email</label>
             <input
               type="email"
               name="email"
               id="email"
-              placeholder="johnathan@example.com"
+              placeholder="Email"
               className="form-control form-control-line"
               onChange={handleInput}
             />
+            {errors.email && (
+              <div className="invalid-feedback">{errors.email}</div>
+            )}
           </div>
           <div>
             <div className="row justify-content-center">
@@ -100,10 +106,13 @@ function Login() {
             <input
               type="password"
               name="password"
-              placeholder="********"
+              placeholder="Password"
               onChange={handleInput}
               className="form-control form-control-line"
             />
+            {errors.password && (
+              <div className="invalid-feedback">{errors.password}</div>
+            )}
           </div>
           <div className="form-group">
             <span>
