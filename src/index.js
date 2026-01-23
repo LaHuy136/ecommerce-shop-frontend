@@ -2,8 +2,6 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext";
-import ProtectedRoute from "../src/components/ProtectedRoute";
-import GuestRoute from "../src/components/GuestRoute";
 import "./index.css";
 
 import App from "./App";

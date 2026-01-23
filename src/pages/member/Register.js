@@ -1,5 +1,3 @@
-import { useState } from "react";
-import RenderError from "../../components/errors/RenderError";
 import { register } from "../../api/auth";
 import { Link, useNavigate } from "react-router-dom";
 import AccountForm from "../../components/AccountForm";
@@ -77,8 +75,17 @@ function Register() {
       toast.success("Register successfully");
       navigate("/login", { replace: true });
     } catch (error) {
-      setErrors(error.response.data.errors);
-      toast.error("Register failed");
+      if (error.response) {
+        const { status, data } = error.response;
+
+        if (status === 422) {
+          setErrors(data.errors);
+        } else {
+          toast.error("Register failed, please try again");
+        }
+      } else {
+        toast.error("Network error, please check your connection");
+      }
     }
   };
 
