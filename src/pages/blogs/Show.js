@@ -1,24 +1,31 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Link, useParams } from "react-router-dom";
-import { show } from "../../api/blogs";
+import { show, showComment, storeComment } from "../../api/blogs";
 import { formatDate, formatTime } from "../../utils/Date";
 import social from "../../assets/images/blog/socials.png";
-import shippingBanner from "../../assets/images/home/shipping.jpg";
-import { error } from "jquery";
+import avatarDefault from "../../../src/assets/images/users/5.jpg";
+import { toast } from "react-toastify";
+import CommentList from "../../components/comments/CommentList";
 function Show() {
-  const isLogin = !!localStorage.getItem("user");
-  const user = JSON.parse(localStorage.getItem("user"));
+  const storedUser = localStorage.getItem("user");
+  const user = storedUser ? JSON.parse(storedUser) : null;
+  const isLogin = !!user;
   const { id } = useParams();
-  const [blog, setBlog] = useState([]);
-  const [previousBlog, setPreviousBlog] = useState([]);
-  const [nextBlog, setNextBlog] = useState([]);
 
-  useEffect(() => {
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
-    show(id)
+  const [blog, setBlog] = useState({});
+  const [comments, setComments] = useState([]);
+  const [parentId, setParentId] = useState(null);
+
+  const [previousBlog, setPreviousBlog] = useState(null);
+  const [nextBlog, setNextBlog] = useState(null);
+
+  const [textarea, setTextArea] = useState("");
+  const textareaRef = useRef(null);
+
+  const [errors, setErrors] = useState("");
+
+  const showBlog = async (id) => {
+    await show(id)
       .then((res) => {
         setBlog(res.blog);
         setPreviousBlog(res.previousBlog);
@@ -27,15 +34,92 @@ function Show() {
       .catch(function (error) {
         console.log(error);
       });
+  };
+
+  const fetchComments = async (blogId) => {
+    await showComment(blogId)
+      .then((res) => {
+        setComments(res.data);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
+
+  // Load comments
+  useEffect(() => {
+    if (blog?.id) {
+      fetchComments(blog.id);
+    }
+  }, [blog?.id]);
+
+  // Load blog
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+    showBlog(id);
   }, [id]);
 
-  return (
-    <>
-      <div class="col-sm-9">
-        <div class="blog-post-area">
-          <h2 class="title text-center">Latest From our Blog</h2>
+  const scrollToCommentBox = () => {
+    textareaRef.current?.scrollIntoView({
+      behavior: "smooth",
+      block: "center",
+    });
+  };
 
-          <div class="single-blog-post">
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!user) {
+      toast.error("Please login to comment");
+      setTextArea("");
+      return;
+    }
+
+    if (!textarea.trim()) {
+      setErrors("Please enter your comment");
+      setTextArea("");
+      return;
+    }
+    try {
+      const formData = new FormData();
+      formData.append("blog_id", null);
+      formData.append("parent_id", parentId);
+      formData.append("content", textarea);
+
+      await storeComment(formData);
+
+      setTextArea("");
+      setParentId(null);
+      fetchComments(blog.id);
+      toast.success("Comment posted successfully");
+    } catch (error) {
+      if (error.response) {
+        const { status, data } = error.response;
+
+        if (status === 401) {
+          toast.error("Please login to comment");
+        } else if (status === 422) {
+          setErrors(error.response.data.errors?.content?.[0]);
+          toast.error(data.message || "Validation error");
+        } else {
+          toast.error("Post comment failed, please try again");
+        }
+      } else {
+        toast.error("Network error, please check your connection");
+      }
+    }
+  };
+
+  return (
+    <div className="container">
+      <div className="col-sm-9">
+        <div className="blog-post-area">
+          <h2 className="title text-center">Latest From our Blog</h2>
+
+          <div className="single-blog-post" key={blog.id}>
             {/*  Title  */}
             <h3>{blog.title}</h3>
 
@@ -43,17 +127,17 @@ function Show() {
             <h5>{blog.description}</h5>
 
             {/*  Author & Post Date  */}
-            <div class="post-meta">
+            <div className="post-meta">
               <ul>
                 <li>
-                  <i class="fa fa-user"></i> {blog?.user?.name}
+                  <i className="fa fa-user"></i> {blog?.user?.name}
                 </li>
                 <li>
-                  <i className="fa fa-clock-o"></i>{" "}
+                  <i className="fa fa-clock-o"></i>
                   {formatTime(blog.created_at)}
                 </li>
                 <li>
-                  <i className="fa fa-calendar"></i>{" "}
+                  <i className="fa fa-calendar"></i>
                   {formatDate(blog.created_at)}
                 </li>
               </ul>
@@ -65,8 +149,8 @@ function Show() {
             {/* Content */}
             <p>{blog.content}</p>
 
-            <div class="pager-area">
-              <ul class="pager pull-right">
+            <div className="pager-area">
+              <ul className="pager pull-right">
                 <li>
                   {previousBlog && (
                     <Link to={`/blogs/${previousBlog.id}`} className="prev">
@@ -86,67 +170,94 @@ function Show() {
           </div>
         </div>
 
-        <div class="rating-area">
-          <ul class="ratings">
-            <li class="rate-this">Rate this item:</li>
+        <div className="rating-area">
+          <ul className="ratings">
+            <li className="rate-this">Rate this item:</li>
             <li>
               {[1, 2, 3, 4, 5].map((i) =>
                 i < blog?.rates_avg_rating ? (
-                  <i class="fa fa-star color"></i>
+                  <i key={i} className="fa fa-star color"></i>
                 ) : (
-                  <i class="fa fa-star"></i>
+                  <i key={i} className="fa fa-star"></i>
                 ),
               )}
             </li>
-            <li class="color">({blog.rates_count} rating)</li>
+            <li className="color">({blog.rates_count} rating)</li>
           </ul>
         </div>
 
-        <div class="socials-share">
-          <a href="">
+        <div className="socials-share">
+          <div>
             <img src={social} alt="" />
-          </a>
+          </div>
         </div>
       </div>
-      // Response comment
-      <div class="response-area">
+      {/*  Response comment */}
+      <div className="response-area">
         {blog.comments_count > 0 && <h2> {blog.comments_count} RESPONSES</h2>}
-        <ul class="media-list" id="comment-list"></ul>
+        <CommentList
+          comments={comments}
+          setParentId={setParentId}
+          scrollToCommentBox={scrollToCommentBox}
+          textareaRef={textareaRef}
+          avatarDefault={avatarDefault}
+        />
       </div>
-      // Comment post
-      <div class="replay-box">
-        <div class="row">
-          <div class="col-sm-12">
-            <div class="post-comment">
+      {/* Comment post */}
+      <div className="replay-box">
+        <div className="row">
+          <div className="col-sm-12">
+            <div className="post-comment">
               <h2>Leave a reply</h2>
 
-              <div class="blank-arrow">
+              <div className="blank-arrow">
                 {!isLogin ? null : <label>{user.name}</label>}
               </div>
 
-              <div class="blank-arrow">
-                <label class="text-muted">Please login to comment</label>
+              <div className="blank-arrow">
+                <label className="text-muted">Please login to comment</label>
               </div>
 
               <span>*</span>
 
-              <textarea
-                id="comment-message"
-                name="content"
-                rows="5"
-                placeholder="Your comment"
-              ></textarea>
-              <input type="hidden" id="blog-id" value={blog.id} />
-              <input type="hidden" id="parent-id" value="" />
+              <form onSubmit={handleSubmit}>
+                <textarea
+                  ref={textareaRef}
+                  name="content"
+                  rows="5"
+                  placeholder=" Your comment"
+                  value={textarea}
+                  onChange={(e) => setTextArea(e.target.value)}
+                ></textarea>
 
-              <button id="submit-comment" class="btn btn-primary">
-                Post comment
-              </button>
+                {parentId && (
+                  <p className="text-muted">
+                    Replying to comment #{parentId}
+                    <button
+                      className="btn btn-link"
+                      onClick={() => {
+                        setParentId(null);
+                        window.scrollTo({
+                          top: 150,
+                          block: "center",
+                          behavior: "smooth",
+                        });
+                      }}
+                    >
+                      Cancel
+                    </button>
+                  </p>
+                )}
+                <span>{errors}</span>
+                <button id="submit-comment" className="btn btn-primary">
+                  Post comment
+                </button>
+              </form>
             </div>
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 }
 export default Show;

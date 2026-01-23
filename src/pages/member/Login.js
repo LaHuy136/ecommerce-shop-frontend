@@ -64,8 +64,19 @@ function Login() {
       toast.success("Login successfully");
       navigate("/", { replace: true });
     } catch (error) {
-      setErrors(error.response.data.errors);
-      toast.error("Login failed");
+      if (error.response) {
+        const { status, data } = error.response;
+
+        if (status === 401) {
+          toast.error("Invalid email or password");
+        } else if (status === 422) {
+          setErrors(data.errors);
+        } else {
+          toast.error("Login failed, please try again");
+        }
+      } else {
+        toast.error("Network error, please check your connection");
+      }
     }
   };
 
