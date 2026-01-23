@@ -1,5 +1,5 @@
 import CountrySelect from "./selects/CountrySelect";
-
+import { Link } from "react-router-dom";
 function AccountForm({
   inputs,
   setInputs,
@@ -102,7 +102,14 @@ function AccountForm({
           <div className="invalid-feedback">{errors.country}</div>
         )}
       </div>
-
+      {isRegister && (
+        <div className="form-group">
+          <span>
+            <b>You have account ? </b>
+          </span>
+          <Link to="/login">Login</Link>
+        </div>
+      )}
       <div className="form-group">
         <button type="submit" className="btn btn-default">
           {isRegister ? "Register" : "Update"}

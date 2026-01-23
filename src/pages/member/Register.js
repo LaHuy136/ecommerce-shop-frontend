@@ -1,9 +1,9 @@
 import { useState } from "react";
-import RenderError from "../components/errors/RenderError";
-import { register } from "../api/auth";
+import RenderError from "../../components/errors/RenderError";
+import { register } from "../../api/auth";
 import { Link, useNavigate } from "react-router-dom";
-import AccountForm from "../components/AccountForm";
-import useAccountForm from "../hooks/useAccountForm";
+import AccountForm from "../../components/AccountForm";
+import useAccountForm from "../../hooks/useAccountForm";
 import { toast } from "react-toastify";
 
 function Register() {
@@ -47,34 +47,37 @@ function Register() {
       return;
     }
 
-    setErrors({});
-
-    const formData = new FormData();
-    formData.append("name", inputs.name);
-    formData.append("email", inputs.email);
-    formData.append("password", inputs.password);
-    formData.append("password_confirmation", inputs.password_confirmation);
-
-    if (inputs.phone) {
-      formData.append("phone", inputs.phone);
-    }
-
-    if (file) {
-      formData.append("avatar", file);
-    }
-
-    if (inputs.country) {
-      formData.append("country_id", inputs.country_id);
-    }
-
     try {
-      await register(formData);
+      const formData = new FormData();
+      formData.append("name", inputs.name);
+      formData.append("email", inputs.email);
+      formData.append("password", inputs.password);
+      formData.append("password_confirmation", inputs.password_confirmation);
+
+      if (inputs.phone) {
+        formData.append("phone", inputs.phone);
+      }
+
+      if (file) {
+        formData.append("avatar", file);
+      }
+
+      if (inputs.country) {
+        formData.append("country_id", inputs.country_id);
+      }
+
+      const response = await register(formData);
+
+      if (response.data?.errors) {
+        setErrors(response.data.errors);
+        toast.error("Register failed");
+        return;
+      }
 
       toast.success("Register successfully");
       navigate("/login", { replace: true });
     } catch (error) {
-      console.log(error?.response?.data);
-
+      setErrors(error.response.data.errors);
       toast.error("Register failed");
     }
   };
@@ -105,4 +108,5 @@ function Register() {
     </div>
   );
 }
+
 export default Register;
