@@ -7,16 +7,16 @@ import GuestRoute from "../src/components/GuestRoute";
 import "./index.css";
 
 import App from "./App";
-import Home from "./pages/Index";
+import Home from "./pages/member/Index";
 import Cart from "./pages/carts/Cart";
 import Checkout from "./pages/carts/Checkout";
-import Login from "./pages/Login";
-import Register from "./pages/Register";
+import Login from "./pages/member/Login";
+import Register from "./pages/member/Register";
 import reportWebVitals from "./reportWebVitals";
-import MemberLayout from "./layouts/Layouts";
 import Shop from "./pages/products/Shop";
+import ProductDetail from "./pages/products/Show";
 import Blog from "./pages/blogs/Index";
-import Show from "./pages/blogs/Show";
+import ShowBlog from "./pages/blogs/Show";
 import Account from "./pages/accounts/Index";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
@@ -27,76 +27,14 @@ root.render(
         <App>
           {/* <ScrollToTop> */}
           <Routes>
-            {/* PUBLIC */}
-            <Route
-              path="/"
-              element={
-                <MemberLayout>
-                  <Home />
-                </MemberLayout>
-              }
-            />
-            {/* Shop */}
-            <Route
-              path="/shop"
-              element={
-                <MemberLayout>
-                  <Shop />
-                </MemberLayout>
-              }
-            />
-
-            {/* Blogs */}
-            <Route
-              path="/blogs"
-              element={
-                <MemberLayout>
-                  <Blog />
-                </MemberLayout>
-              }
-            />
-
-            <Route
-              path="/blogs/:id"
-              element={
-                <MemberLayout>
-                  <Show />
-                </MemberLayout>
-              }
-            />
-
-            {/* Accounts */}
-            <Route
-              path="/accounts"
-              element={
-                <ProtectedRoute>
-                  <MemberLayout>
-                    <Account />
-                  </MemberLayout>
-                </ProtectedRoute>
-              }
-            />
-
-            {/* Auth */}
-            <Route
-              path="/login"
-              element={
-                <GuestRoute>
-                  <MemberLayout>
-                    <Login />
-                  </MemberLayout>
-                </GuestRoute>
-              }
-            />
-
-            <Route
-              path="/register"
-              element={
-                <MemberLayout>
-                  <Register />
-                </MemberLayout>
-              }
-            />
+            <Route path="/" element={<Home />} />
+            <Route path="/shop" element={<Shop />} />
+            <Route path="/products/:id" element={<ProductDetail />} />
+            <Route path="/blogs" element={<Blog />} />
+            <Route path="/blogs/:id" element={<ShowBlog />} />
+            <Route path="/accounts" element={<Account />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
           </Routes>
           {/* </ScrollToTop> */}
         </App>

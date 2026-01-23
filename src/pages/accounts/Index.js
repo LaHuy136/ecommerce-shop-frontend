@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import avatarDefault from "../../../src/assets/images/users/5.jpg";
 import { useEffect, useState } from "react";
 import { index, update } from "../../api/account";
@@ -8,6 +8,12 @@ import { toast } from "react-toastify";
 
 function Account() {
   const [account, setAccount] = useState([]);
+  const user = localStorage.getItem("token");
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (!user) navigate("/login");
+  });
+
   const initialValues = {
     email: "",
     name: "",

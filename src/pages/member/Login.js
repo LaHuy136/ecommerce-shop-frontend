@@ -1,12 +1,16 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import RenderError from "../components/errors/RenderError";
-import { login as loginApi } from "../api/auth";
-import { useAuth } from "../context/AuthContext";
+import { login as loginApi } from "../../api/auth";
+import { useAuth } from "../../context/AuthContext";
 import { toast } from "react-toastify";
 function Login() {
   const navigate = useNavigate();
+  const user = localStorage.getItem("token");
+
   const { login } = useAuth();
+  useEffect(() => {
+    if (user) navigate("/");
+  });
 
   const [inputs, setInputs] = useState({
     email: "",
@@ -28,7 +32,7 @@ function Login() {
 
     if (!inputs.email) {
       errorsSubmit.email = "Please enter your email";
-    } else if (!inputs.email.match(/@([\w.-]+)/)) {
+    } else if (!inputs.email.match(/^\S+@\S+\.\S+$/)) {
       errorsSubmit.email = "Invalid email";
     }
 
@@ -43,26 +47,25 @@ function Login() {
       return;
     }
 
-    setErrors({});
-
-    const formData = new FormData();
-    formData.append("email", inputs.email);
-    formData.append("password", inputs.password);
-
     try {
-      const res = await loginApi(formData);
+      const formData = new FormData();
+      formData.append("email", inputs.email);
+      formData.append("password", inputs.password);
 
-      login(res.user, res.token);
+      const response = await loginApi(formData);
 
+      if (response.data?.errors) {
+        setErrors(response.data.errors);
+        toast.error("Login failed");
+        return;
+      }
+
+      login(response.user, response.token);
       toast.success("Login successfully");
       navigate("/", { replace: true });
     } catch (error) {
-      const message =
-        error?.response?.data?.errors?.error ||
-        error?.response?.data?.message ||
-        "Login failed";
-
-      toast.error(message);
+      setErrors(error.response.data.errors);
+      toast.error("Login failed");
     }
   };
 
