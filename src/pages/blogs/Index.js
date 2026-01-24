@@ -2,7 +2,12 @@ import { useState, useEffect } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { index } from "../../api/blogs";
 import { formatDate, formatTime } from "../../utils/Date";
+import { toast } from "react-toastify";
+import Rate from "../../components/rates/Rate";
 function Index() {
+  const storedUser = localStorage.getItem("user");
+  const user = storedUser ? JSON.parse(storedUser) : null;
+  const isLogin = !!user;
   const [blogs, setBlogs] = useState([]);
   const [pagination, setPagination] = useState(null);
   const [searchParams, setSearchParams] = useSearchParams();
@@ -12,12 +17,52 @@ function Index() {
   const fetchBlogs = async (page = 1) => {
     try {
       const response = await index({}, page);
-      console.log(response.blogs);
 
-      setBlogs(response.blogs.data);
+      if (!response?.blogs) {
+        toast.error("Invalid blog data");
+        setBlogs([]);
+        setPagination(null);
+        return;
+      }
+
+      setBlogs(response.blogs.data || []);
       setPagination(response.blogs || []);
     } catch (error) {
-      console.error("Fetch index blogs error:", error);
+      if (error.response) {
+        const { status, data } = error.response;
+
+        switch (status) {
+          case 401:
+            toast.error("Unauthorized, please login again");
+            break;
+
+          case 404:
+            toast.error("Blogs not found");
+            break;
+
+          case 422:
+            toast.error("Invalid request parameters");
+            console.error("Validation errors:", data?.errors);
+            break;
+
+          case 500:
+            toast.error("Server error, please try later");
+            break;
+
+          default:
+            toast.error("Failed to fetch blogs");
+            console.error("Fetch blogs error:", error.response);
+            break;
+        }
+
+        setBlogs([]);
+        setPagination(null);
+      } else {
+        toast.error("Network error, please check your connection");
+        console.error("Network error:", error);
+        setBlogs([]);
+        setPagination(null);
+      }
     }
   };
 
@@ -56,23 +101,15 @@ function Index() {
                   </li>
                 </ul>
 
-                <div
-                  className="rate pull-right justify-content-center"
-                  data-blog={blog.id}
-                  data-rate={blog.rates_avg_rating}
-                >
+                <div className="rate pull-right justify-content-center">
                   <div className="vote rating-inline">
                     <div className="rating-stars">
-                      {[1, 2, 3, 4, 5].map((i) => (
-                        <span
-                          key={i}
-                          className="ratings_stars"
-                          data-value={i}
-                        ></span>
-                      ))}
-                      <span className="rating-text">
-                        | {blog.rates_count} rating
-                      </span>
+                      <Rate
+                        blogId={blog.id}
+                        isLogin={isLogin}
+                        avgRating={blog.rates_avg_rating}
+                        rateCount={blog.rates_count}
+                      />
                     </div>
                   </div>
                 </div>

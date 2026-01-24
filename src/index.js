@@ -12,7 +12,7 @@ import Login from "./pages/member/Login";
 import Register from "./pages/member/Register";
 import reportWebVitals from "./reportWebVitals";
 import Shop from "./pages/products/Shop";
-import ProductDetail from "./pages/products/Show";
+// import ProductDetail from "./pages/products/Show";
 import Blog from "./pages/blogs/Index";
 import ShowBlog from "./pages/blogs/Show";
 import Account from "./pages/accounts/Index";
@@ -27,7 +27,7 @@ root.render(
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/shop" element={<Shop />} />
-            <Route path="/products/:id" element={<ProductDetail />} />
+            {/* <Route path="/products/:id" element={<ProductDetail />} /> */}
             <Route path="/blogs" element={<Blog />} />
             <Route path="/blogs/:id" element={<ShowBlog />} />
             <Route path="/accounts" element={<Account />} />
