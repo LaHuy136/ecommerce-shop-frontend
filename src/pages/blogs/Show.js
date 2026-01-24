@@ -6,6 +6,7 @@ import social from "../../assets/images/blog/socials.png";
 import avatarDefault from "../../../src/assets/images/users/5.jpg";
 import { toast } from "react-toastify";
 import CommentList from "../../components/comments/CommentList";
+import Rate from "../../components/rates/Rate";
 function Show() {
   const storedUser = localStorage.getItem("user");
   const user = storedUser ? JSON.parse(storedUser) : null;
@@ -25,25 +26,40 @@ function Show() {
   const [errors, setErrors] = useState("");
 
   const showBlog = async (id) => {
-    await show(id)
-      .then((res) => {
-        setBlog(res.blog);
-        setPreviousBlog(res.previousBlog);
-        setNextBlog(res.nextBlog);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
+    try {
+      const res = await show(id);
+
+      setBlog(res.blog);
+      setPreviousBlog(res.previousBlog);
+      setNextBlog(res.nextBlog);
+    } catch (error) {
+      if (error.response) {
+        const { status, data } = error.response;
+
+        if (status === 404) {
+          console.log("Blog not found");
+        } else {
+          console.log(data?.message || "Failed to fetch blog");
+        }
+      } else {
+        toast.error("Network error, please check your connection");
+        console.error("Network error:", error);
+      }
+    }
   };
 
   const fetchComments = async (blogId) => {
-    await showComment(blogId)
-      .then((res) => {
-        setComments(res.data);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
+    try {
+      const res = await showComment(blogId);
+      setComments(res.data);
+    } catch (error) {
+      if (error.response) {
+        console.log(error.response.data?.message || "Failed to fetch comments");
+      } else {
+        toast.error("Network error, please check your connection");
+        console.error("Network error:", error);
+      }
+    }
   };
 
   // Load comments
@@ -84,12 +100,11 @@ function Show() {
       return;
     }
     try {
-      const formData = new FormData();
-      formData.append("blog_id", null);
-      formData.append("parent_id", parentId);
-      formData.append("content", textarea);
-
-      await storeComment(formData);
+      await storeComment({
+        blog_id: blog.id,
+        parent_id: parentId,
+        content: textarea,
+      });
 
       setTextArea("");
       setParentId(null);
@@ -171,24 +186,22 @@ function Show() {
         </div>
 
         <div className="rating-area">
+          <p className="rate-this">Rate this item:</p>
           <ul className="ratings">
-            <li className="rate-this">Rate this item:</li>
             <li>
-              {[1, 2, 3, 4, 5].map((i) =>
-                i < blog?.rates_avg_rating ? (
-                  <i key={i} className="fa fa-star color"></i>
-                ) : (
-                  <i key={i} className="fa fa-star"></i>
-                ),
-              )}
+              <Rate
+                blogId={blog.id}
+                isLogin={isLogin}
+                avgRating={blog.rates_avg_rating}
+                rateCount={blog.rates_count}
+              />
             </li>
-            <li className="color">({blog.rates_count} rating)</li>
           </ul>
         </div>
 
         <div className="socials-share">
           <div>
-            <img src={social} alt="" />
+            <img src={social} alt="Social Share Image..." />
           </div>
         </div>
       </div>
@@ -211,16 +224,15 @@ function Show() {
               <h2>Leave a reply</h2>
 
               <div className="blank-arrow">
-                {!isLogin ? null : <label>{user.name}</label>}
+                {!isLogin ? (
+                  <label className="text-muted">Please login to comment</label>
+                ) : (
+                  <label>{user.name}</label>
+                )}
               </div>
-
-              <div className="blank-arrow">
-                <label className="text-muted">Please login to comment</label>
-              </div>
-
               <span>*</span>
 
-              <form onSubmit={handleSubmit}>
+              <form onSubmit={handleSubmit} method="POST">
                 <textarea
                   ref={textareaRef}
                   name="content"

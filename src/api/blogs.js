@@ -24,3 +24,9 @@ export const storeComment = async (data) => {
   const res = await axios.post(`/user/blog/comment`, data);
   return res.data;
 };
+
+export const ratingBlog = async (data) => {
+  const res = await axios.post("/user/blog/rate", data);
+
+  return res.data;
+};
