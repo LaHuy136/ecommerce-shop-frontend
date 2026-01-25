@@ -115,13 +115,13 @@ function Index() {
                 </div>
               </div>
 
-              <Link to={`/blogs/${blog.id}`}>
+              <Link to={`/blog/detail/${blog.id}`}>
                 <img src={blog.image} alt="Blog Image..." />
               </Link>
 
               <p>{blog.content}</p>
 
-              <Link className="btn btn-primary" to={`/blogs/${blog.id}`}>
+              <Link className="btn btn-primary" to={`/blog/detail/${blog.id}`}>
                 Read More
               </Link>
             </div>

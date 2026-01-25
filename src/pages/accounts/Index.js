@@ -2,11 +2,11 @@ import { Link, useNavigate } from "react-router-dom";
 import avatarDefault from "../../../src/assets/images/users/5.jpg";
 import { useEffect } from "react";
 import { update } from "../../api/account";
-import AccountForm from "../../components/AccountForm";
-import useAccountForm from "../../hooks/useAccountForm";
 import { toast } from "react-toastify";
 import { useAuth } from "../../context/AuthContext";
-
+import AccountForm from "../../components/AccountForm";
+import useAccountForm from "../../hooks/useAccountForm";
+import MenuAccount from "../../components/layouts/MenuAccount";
 function Account() {
   const { user, login, loading } = useAuth();
   const navigate = useNavigate();
@@ -21,7 +21,7 @@ function Account() {
     password: "",
     password_confirmation: "",
     phone: "",
-    country_id: "",
+    country_id: null,
   };
 
   const {
@@ -92,7 +92,7 @@ function Account() {
       email: user.email || "",
       name: user.name || "",
       phone: user.phone || "",
-      country_id: Number(user.country_id) || "",
+      country_id: user.country_id || "",
       password: "",
       password_confirmation: "",
     });
@@ -100,60 +100,36 @@ function Account() {
 
   return (
     <section>
-      <div className="container">
-        <div className="row">
-          <div className="col-sm-3">
-            <div className="left-sidebar">
-              <h2>Account & Product</h2>
-              <div className="panel-group category-products" id="accordian">
-                <div className="panel panel-default">
-                  <div className="panel-heading">
-                    <h4 className="panel-title">
-                      <Link to="/accounts">Account</Link>
-                    </h4>
-                  </div>
-                </div>
+      <div className="col-sm-7">
+        <div className="blog-post-area">
+          <h2 className="title text-center">Update profile</h2>
 
-                <div className="panel panel-default">
-                  <div className="panel-heading">
-                    <h4 className="panel-title">
-                      <Link to="/products">My product</Link>
-                    </h4>
-                  </div>
-                </div>
-              </div>
-
-              <img
-                src={
-                  user?.avatar
-                    ? "http://ecommerce-shop.test/storage/" + user.avatar
-                    : avatarDefault
-                }
-                className="rounded-circle"
-                width="150"
-                height="auto"
-                alt="Avatar..."
-              />
-            </div>
-          </div>
-          <div className="col-sm-9">
-            <div className="blog-post-area">
-              <h2 className="title text-center">Update profile</h2>
-
-              <div className="signup-form">
-                <AccountForm
-                  inputs={inputs}
-                  errors={errors}
-                  handleInput={handleInput}
-                  handleFile={handleFile}
-                  fileErr={fileErr}
-                  onSubmit={handleSubmit}
-                  isRegister={false}
-                />
-              </div>
-            </div>
+          <div className="signup-form">
+            <AccountForm
+              inputs={inputs}
+              errors={errors}
+              handleInput={handleInput}
+              handleFile={handleFile}
+              fileErr={fileErr}
+              onSubmit={handleSubmit}
+              isRegister={false}
+            />
           </div>
         </div>
+      </div>
+
+      <div className="col-sm-2">
+        <img
+          src={
+            user?.avatar
+              ? "http://ecommerce-shop.test/storage/" + user.avatar
+              : avatarDefault
+          }
+          className="rounded-circle"
+          width="150"
+          height="auto"
+          alt="Avatar..."
+        />
       </div>
     </section>
   );
