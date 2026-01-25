@@ -28,9 +28,9 @@ root.render(
             <Route path="/" element={<Home />} />
             <Route path="/shop" element={<Shop />} />
             {/* <Route path="/products/:id" element={<ProductDetail />} /> */}
-            <Route path="/blogs" element={<Blog />} />
-            <Route path="/blogs/:id" element={<ShowBlog />} />
-            <Route path="/accounts" element={<Account />} />
+            <Route path="/blog" element={<Blog />} />
+            <Route path="/blog/detail/:id" element={<ShowBlog />} />
+            <Route path="/account" element={<Account />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
           </Routes>

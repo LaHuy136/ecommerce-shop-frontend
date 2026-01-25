@@ -168,14 +168,17 @@ function Show() {
               <ul className="pager pull-right">
                 <li>
                   {previousBlog && (
-                    <Link to={`/blogs/${previousBlog.id}`} className="prev">
+                    <Link
+                      to={`/blog/detail/${previousBlog.id}`}
+                      className="prev"
+                    >
                       ← prev
                     </Link>
                   )}
                 </li>
                 <li>
                   {nextBlog && (
-                    <Link to={`/blogs/${nextBlog.id}`} className="next">
+                    <Link to={`/blog/detail/${nextBlog.id}`} className="next">
                       next →
                     </Link>
                   )}

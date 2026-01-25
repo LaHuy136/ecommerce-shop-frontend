@@ -114,7 +114,7 @@ function Header() {
                 <ul className="nav navbar-nav">
                   {isLogin && (
                     <li>
-                      <Link to="/accounts">
+                      <Link to="/account">
                         <i className="fa fa-user"></i> Account
                       </Link>
                     </li>
@@ -209,7 +209,7 @@ function Header() {
                     </ul>
                   </li>
                   <li className="dropdown">
-                    <Link to="/blogs">
+                    <Link to="/blog">
                       Blog
                       {/* <i className="fa fa-angle-down"></i> */}
                     </Link>
