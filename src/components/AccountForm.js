@@ -34,6 +34,7 @@ function AccountForm({
           placeholder="Email"
           className="form-control form-control-line"
           onChange={handleInput}
+          readOnly={!isRegister}
         />
         {errors.email && <div className="invalid-feedback">{errors.email}</div>}
       </div>

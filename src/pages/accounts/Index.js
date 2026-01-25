@@ -1,18 +1,19 @@
 import { Link, useNavigate } from "react-router-dom";
 import avatarDefault from "../../../src/assets/images/users/5.jpg";
-import { useEffect, useState } from "react";
-import { index, update } from "../../api/account";
+import { useEffect } from "react";
+import { update } from "../../api/account";
 import AccountForm from "../../components/AccountForm";
 import useAccountForm from "../../hooks/useAccountForm";
 import { toast } from "react-toastify";
+import { useAuth } from "../../context/AuthContext";
 
 function Account() {
-  const [account, setAccount] = useState([]);
-  const user = localStorage.getItem("token");
+  const { user, login, loading } = useAuth();
   const navigate = useNavigate();
+
   useEffect(() => {
-    if (!user) navigate("/login");
-  });
+    if (!user && !loading) navigate("/login");
+  }, [user, loading]);
 
   const initialValues = {
     email: "",
@@ -34,24 +35,9 @@ function Account() {
     handleFile,
   } = useAccountForm(initialValues);
 
-  const loadAccount = async () => {
-    try {
-      const res = await index();
-      setAccount(res.data);
-    } catch (error) {
-      console.error("Load profile error: ", error);
-    }
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     let errorsSubmit = {};
-
-    if (!inputs.email) {
-      errorsSubmit.email = "Please enter your email";
-    } else if (!inputs.email.match(/@([\w.-]+)/)) {
-      errorsSubmit.email = "Invalid email";
-    }
 
     if (inputs.password) {
       if (inputs.password.length < 8) {
@@ -70,8 +56,11 @@ function Account() {
 
     const formData = new FormData();
     formData.append("name", inputs.name);
-    formData.append("email", inputs.email);
     formData.append("phone", inputs.phone);
+
+    if (inputs.email) {
+      formData.append("email", inputs.email);
+    }
 
     if (inputs.password) {
       formData.append("password", inputs.password);
@@ -87,31 +76,27 @@ function Account() {
     }
 
     try {
-      await update(account.id, formData);
-      toast.success("Profile updated successfully");
+      const res = await update(user.id, formData);
+      login(res.user, res.token);
 
-      await loadAccount();
+      toast.success("Profile updated successfully");
     } catch (error) {
       toast.error("Failed to update profile");
     }
   };
 
   useEffect(() => {
-    loadAccount();
-  }, []);
-
-  useEffect(() => {
-    if (!account) return;
+    if (!user) return;
 
     setInputs({
-      email: account.email || "",
-      name: account.name || "",
-      phone: account.phone || "",
-      country_id: account.country_id || "",
+      email: user.email || "",
+      name: user.name || "",
+      phone: user.phone || "",
+      country_id: Number(user.country_id) || "",
       password: "",
       password_confirmation: "",
     });
-  }, [account]);
+  }, [user, setInputs]);
 
   return (
     <section>
@@ -140,8 +125,8 @@ function Account() {
 
               <img
                 src={
-                  account
-                    ? "http://ecommerce-shop.test/storage/" + account.avatar
+                  user?.avatar
+                    ? "http://ecommerce-shop.test/storage/" + user.avatar
                     : avatarDefault
                 }
                 className="rounded-circle"
