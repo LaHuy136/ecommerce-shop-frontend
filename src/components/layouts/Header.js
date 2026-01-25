@@ -192,7 +192,7 @@ function Header() {
                     </Link>
                     <ul role="menu" className="sub-menu">
                       <li>
-                        <Link to="/shop">Products</Link>
+                        <Link to="/account/product/list">Products</Link>
                       </li>
                       {/* <li>
                         <Link to="/product-detail">Product Details</Link>

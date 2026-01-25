@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { home } from "../../api/products";
+import { home } from "../api/products";
 import { Link, useSearchParams } from "react-router-dom";
 function Home() {
   const [featuredProducts, setFeaturedProducts] = useState([]);

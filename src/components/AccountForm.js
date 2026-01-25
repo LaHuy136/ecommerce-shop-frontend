@@ -91,18 +91,20 @@ function AccountForm({
       <div className="form-group">
         <label htmlFor="country_id">Country</label>
         <select
+          key={inputs.country_id}
           name="country_id"
           className="form-control form-control-line"
-          onChange={handleInput}
           value={inputs.country_id || ""}
+          onChange={handleInput}
         >
           <option value="">-- Select country --</option>
           <CountrySelect />
         </select>
-        {errors.country && (
-          <div className="invalid-feedback">{errors.country}</div>
+        {errors.country_id && (
+          <div className="invalid-feedback">{errors.country_id}</div>
         )}
       </div>
+
       {isRegister && (
         <div className="form-group">
           <span>

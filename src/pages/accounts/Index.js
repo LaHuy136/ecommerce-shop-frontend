@@ -5,8 +5,7 @@ import { update } from "../../api/account";
 import { toast } from "react-toastify";
 import { useAuth } from "../../context/AuthContext";
 import AccountForm from "../../components/AccountForm";
-import useAccountForm from "../../hooks/useAccountForm";
-import MenuAccount from "../../components/layouts/MenuAccount";
+import useAccountForm from "../../hooks/useForm";
 function Account() {
   const { user, login, loading } = useAuth();
   const navigate = useNavigate();
@@ -21,7 +20,7 @@ function Account() {
     password: "",
     password_confirmation: "",
     phone: "",
-    country_id: null,
+    country_id: "",
   };
 
   const {
@@ -81,7 +80,7 @@ function Account() {
 
       toast.success("Profile updated successfully");
     } catch (error) {
-      toast.error("Failed to update profile");
+      toast.error("Failed to update profile: ", error);
     }
   };
 

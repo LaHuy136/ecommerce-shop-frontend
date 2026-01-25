@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-function useAccountForm(inititalValues) {
+function useForm(inititalValues) {
   const [inputs, setInputs] = useState(inititalValues);
   const [fileErr, setFileErr] = useState("");
   const [errors, setErrors] = useState({});
@@ -12,26 +12,30 @@ function useAccountForm(inititalValues) {
   };
 
   const handleFile = (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
+    const files = Array.from(e.target.files);
+    if (!files.length) return;
 
     const arrType = ["png", "jpg", "jpeg"];
-    let type = file.type.split("/")[1];
 
-    if (!arrType.includes(type)) {
-      setFileErr("Please choose image (png, jpg, jpeg)");
-      setFile("");
-      return;
-    }
+    for (let file of files) {
+      const type = file.type.split("/")[1];
 
-    if (file.size > 1024 * 1024) {
-      setFileErr("Please choose size image < 1MB");
-      setFile("");
-      return;
+      if (!arrType.includes(type)) {
+        setFileErr("Please choose image (png, jpg, jpeg)");
+        return;
+      }
+
+      if (file.size > 1024 * 1024) {
+        setFileErr("Please choose size image < 1MB");
+        return;
+      }
     }
 
     setFileErr("");
-    setFile(file);
+    setInputs((prev) => ({
+      ...prev,
+      images: files,
+    }));
   };
 
   return {
@@ -46,4 +50,4 @@ function useAccountForm(inititalValues) {
   };
 }
 
-export default useAccountForm;
+export default useForm;
