@@ -5,8 +5,9 @@ import { formatDate, formatTime } from "../../utils/Date";
 import social from "../../assets/images/blog/socials.png";
 import avatarDefault from "../../../src/assets/images/users/5.jpg";
 import { toast } from "react-toastify";
-import CommentList from "../../components/comments/CommentList";
-import Rate from "../../components/rates/Rate";
+import CommentList from "./Comment/CommentList";
+import Rate from "./Rate/Rating";
+
 function Show() {
   const storedUser = localStorage.getItem("user");
   const user = storedUser ? JSON.parse(storedUser) : null;
@@ -164,6 +165,7 @@ function Show() {
             {/* Content */}
             <p>{blog.content}</p>
 
+            {/* Pagination Pre & Next */}
             <div className="pager-area">
               <ul className="pager pull-right">
                 <li>
@@ -176,7 +178,7 @@ function Show() {
                     </Link>
                   )}
                 </li>
-                <li>
+                <li style={{ marginLeft: "10px" }}>
                   {nextBlog && (
                     <Link to={`/blog/detail/${nextBlog.id}`} className="next">
                       next →
@@ -208,6 +210,7 @@ function Show() {
           </div>
         </div>
       </div>
+
       {/*  Response comment */}
       <div className="response-area">
         {blog.comments_count > 0 && <h2> {blog.comments_count} RESPONSES</h2>}
@@ -219,6 +222,7 @@ function Show() {
           avatarDefault={avatarDefault}
         />
       </div>
+
       {/* Comment post */}
       <div className="replay-box">
         <div className="row">

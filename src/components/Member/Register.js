@@ -1,6 +1,6 @@
 import { register } from "../../api/auth";
 import { Link, useNavigate } from "react-router-dom";
-import AccountForm from "../../components/AccountForm";
+import AccountForm from "../AccountForm";
 import useAccountForm from "../../hooks/useForm";
 import { toast } from "react-toastify";
 

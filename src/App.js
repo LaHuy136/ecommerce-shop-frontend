@@ -2,11 +2,11 @@
 import "./App.css";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import Header from "./components/layouts/Header";
-import MenuLeft from "./components/layouts/MenuLeft";
-import Footer from "./components/layouts/Footer";
+import Header from "./components/Layout/Header";
+import MenuLeft from "./components/Layout/MenuLeft";
+import Footer from "./components/Layout/Footer";
 import { useLocation } from "react-router-dom";
-import MenuAccount from "./components/layouts/MenuAccount";
+import MenuAccount from "./components/Layout/MenuAccount";
 
 function App(props) {
   const location = useLocation();

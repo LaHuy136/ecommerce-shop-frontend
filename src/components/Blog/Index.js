@@ -3,7 +3,8 @@ import { Link, useSearchParams } from "react-router-dom";
 import { index } from "../../api/blogs";
 import { formatDate, formatTime } from "../../utils/Date";
 import { toast } from "react-toastify";
-import Rate from "../../components/rates/Rate";
+import Rate from "./Rate/Rating";
+
 function Index() {
   const storedUser = localStorage.getItem("user");
   const user = storedUser ? JSON.parse(storedUser) : null;
@@ -127,7 +128,8 @@ function Index() {
             </div>
           ))}
 
-          <div className="justify-content-center">
+          {/* Pagination */}
+          <div className="justify-content-center" style={{ marginTop: "20px" }}>
             <ul className="pagination">
               {pagination?.links.map((link, index) => (
                 <li key={index} className={link.active ? "active" : ""}>
