@@ -10,21 +10,28 @@ export const AuthProvider = ({ children }) => {
     const storedUser = localStorage.getItem("user");
     const token = localStorage.getItem("token");
 
-    if (storedUser && token) {
-      setUser(JSON.parse(storedUser));
+    if (storedUser && storedUser !== "undefined" && token) {
+      try {
+        setUser(JSON.parse(storedUser));
+      } catch {
+        localStorage.clear();
+        setUser(null);
+      }
     }
+
     setLoading(false);
   }, []);
 
   const login = (userData, token) => {
+    if (!userData || !token) return;
+
     localStorage.setItem("user", JSON.stringify(userData));
     localStorage.setItem("token", token);
     setUser(userData);
   };
 
   const logout = () => {
-    localStorage.removeItem("user");
-    localStorage.removeItem("token");
+    localStorage.clear();
     setUser(null);
   };
 

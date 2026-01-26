@@ -25,6 +25,11 @@ export const storeComment = async (data) => {
   return res.data;
 };
 
+export const getRating = async () => {
+  const res = await axios.get("/user/blog/rate");
+  return res.data;
+};
+
 export const ratingBlog = async (data) => {
   const res = await axios.post("/user/blog/rate", data);
 

@@ -1,13 +1,14 @@
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import avatarDefault from "../../../src/assets/images/users/5.jpg";
-import { useEffect } from "react";
-import { update } from "../../api/account";
+import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import { index, update } from "../../api/account";
 import { useAuth } from "../../context/AuthContext";
 import AccountForm from "../../components/AccountForm";
 import useAccountForm from "../../hooks/useForm";
 function Account() {
   const { user, login, loading } = useAuth();
+  const [profile, setProfile] = useState({});
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -36,66 +37,91 @@ function Account() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    let errorsSubmit = {};
+    console.log(inputs);
+    let errorSubmits = {};
 
     if (inputs.password) {
       if (inputs.password.length < 8) {
-        errorsSubmit.password = "Length of password minimum is 8 characters";
+        errorSubmits.password = "Length of password minimum is 8 characters";
       } else if (inputs.password !== inputs.password_confirmation) {
-        errorsSubmit.password = "Password does not match";
+        errorSubmits.password = "Password does not match";
       }
     }
 
-    if (Object.keys(errorsSubmit).length > 0) {
-      setErrors(errorsSubmit);
+    if (!inputs.country_id) {
+      errorSubmits.country_id = "Please choose your country";
+    }
+
+    if (Object.keys(errorSubmits).length > 0) {
+      setErrors(errorSubmits);
       return;
     }
 
-    setErrors({});
-
-    const formData = new FormData();
-    formData.append("name", inputs.name);
-    formData.append("phone", inputs.phone);
-
-    if (inputs.email) {
-      formData.append("email", inputs.email);
-    }
-
-    if (inputs.password) {
-      formData.append("password", inputs.password);
-      formData.append("password_confirmation", inputs.password_confirmation);
-    }
-
-    if (file) {
-      formData.append("avatar", file);
-    }
-
-    if (inputs.country_id) {
-      formData.append("country_id", inputs.country_id);
-    }
-
     try {
-      const res = await update(user.id, formData);
-      login(res.user, res.token);
+      const formData = new FormData();
+      formData.append("name", inputs.name);
+      formData.append("email", inputs.email);
+      formData.append("phone", inputs.phone);
+      formData.append("country_id", inputs.country_id);
+      if (inputs.password) {
+        formData.append("password", inputs.password);
+        formData.append("password_confirmation", inputs.password_confirmation);
+      }
 
+      if (file) {
+        formData.append("avatar", file);
+      }
+
+      const response = await update(profile.id, formData);
+      login(response.user, response.token);
+      setErrors({});
       toast.success("Profile updated successfully");
+      loadProfile();
     } catch (error) {
-      toast.error("Failed to update profile: ", error);
+      if (error.response) {
+        const { status, data } = error.response;
+
+        if (status === 422) {
+          const formattedErrors = {};
+          Object.keys(data.errors).forEach((key) => {
+            formattedErrors[key] = data.errors[key][0];
+          });
+          setErrors(formattedErrors);
+        } else {
+          toast.error("Create product failed, please try again");
+        }
+      } else {
+        toast.error("Network error, please check your connection");
+      }
+    }
+  };
+  const loadProfile = async () => {
+    try {
+      const response = await index();
+      setProfile(response.data);
+      console.log(response.data);
+    } catch (error) {
+      toast.error("Failed to load profile: ", error);
+      console.log(error);
     }
   };
 
   useEffect(() => {
-    if (!user) return;
+    loadProfile();
+  }, []);
+
+  useEffect(() => {
+    if (!profile) return;
 
     setInputs({
-      email: user.email || "",
-      name: user.name || "",
-      phone: user.phone || "",
-      country_id: user.country_id || "",
+      email: profile.email || "",
+      name: profile.name || "",
+      phone: profile.phone || "",
+      country_id: profile.country_id || "",
       password: "",
       password_confirmation: "",
     });
-  }, [user, setInputs]);
+  }, [profile]);
 
   return (
     <section>

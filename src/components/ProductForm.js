@@ -1,5 +1,5 @@
-import BrandSelect from "../components/selects/BrandSelect";
-import CategorySelect from "../components/selects/CategorySelect";
+import BrandSelect from "../components/Select/BrandSelect";
+import CategorySelect from "../components/Select/CategorySelect";
 function ProductForm({
   inputs,
   setInputs,
@@ -50,7 +50,7 @@ function ProductForm({
 
       <div className="form-group">
         <label htmlFor="category_id" className="col-sm-12">
-          Please choose category
+          Category
         </label>
         <div className="col-sm-12">
           <select
@@ -70,7 +70,7 @@ function ProductForm({
 
       <div className="form-group">
         <label htmlFor="brand_id" className="col-sm-12">
-          Please choose brand
+          Brand
         </label>
         <div className="col-sm-12">
           <select

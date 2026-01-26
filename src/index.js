@@ -5,20 +5,20 @@ import { AuthProvider } from "./context/AuthContext";
 import "./index.css";
 
 import App from "./App";
-import Home from "./pages/Index";
-import Cart from "./pages/carts/Cart";
-import Checkout from "./pages/carts/Checkout";
-import Login from "./pages/member/Login";
-import Register from "./pages/member/Register";
 import reportWebVitals from "./reportWebVitals";
-import Shop from "./pages/products/Shop";
+import Home from "./Home";
+import Cart from "../src/components/Cart/Cart";
+import Checkout from "../src/components/Cart/Checkout";
+import Login from "../src/components/Member/Login";
+import Register from "../src/components/Member/Register";
+import Shop from "../src/components/Product/Shop";
 // import ProductDetail from "./pages/products/Show";
-import Blog from "./pages/blogs/Index";
-import ShowBlog from "./pages/blogs/Show";
-import Account from "./pages/accounts/Index";
-import Product from "./pages/member/Product";
-import Create from "./pages/products/Create";
-import Edit from "./pages/products/Edit";
+import Blog from "../src/components/Blog/Index";
+import ShowBlog from "../src/components/Blog/Detail";
+import Account from "../src/components/Account/Index";
+import Product from "../src/components/Member/Product";
+import Create from "../src/components/Product/Create";
+import Edit from "../src/components/Product/Edit";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(

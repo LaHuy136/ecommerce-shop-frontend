@@ -1,4 +1,4 @@
-import CountrySelect from "./selects/CountrySelect";
+import CountrySelect from "./Select/CountrySelect";
 import { Link } from "react-router-dom";
 function AccountForm({
   inputs,
@@ -91,11 +91,10 @@ function AccountForm({
       <div className="form-group">
         <label htmlFor="country_id">Country</label>
         <select
-          key={inputs.country_id}
           name="country_id"
           className="form-control form-control-line"
-          value={inputs.country_id || ""}
           onChange={handleInput}
+          value={inputs.country_id}
         >
           <option value="">-- Select country --</option>
           <CountrySelect />
