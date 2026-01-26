@@ -9,11 +9,19 @@ function useForm(inititalValues) {
   const handleInput = (e) => {
     const { name, value } = e.target;
     setInputs((prev) => ({ ...prev, [name]: value }));
+    setErrors((prev) => ({ ...prev, [name]: null }));
   };
 
   const handleFile = (e) => {
     const files = Array.from(e.target.files);
-    if (!files.length) return;
+    if (!files.length) {
+      setFileErr("");
+      setInputs((prev) => ({
+        ...prev,
+        images: [],
+      }));
+      return;
+    }
 
     const arrType = ["png", "jpg", "jpeg"];
 
@@ -29,6 +37,14 @@ function useForm(inititalValues) {
         setFileErr("Please choose size image < 1MB");
         return;
       }
+    }
+
+    const total =
+      inputs.old_images.length - inputs.delete_images.length + files.length;
+
+    if (total > 3) {
+      setFileErr("Maximum 3 images per product");
+      return;
     }
 
     setFileErr("");
