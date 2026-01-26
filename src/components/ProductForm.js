@@ -10,6 +10,8 @@ function ProductForm({
   onSubmit,
   isCreate = true,
 }) {
+  const hasErrors = Object.keys(errors).length > 0 || fileErr;
+
   return (
     <form onSubmit={onSubmit}>
       <div className="form-group">
@@ -160,9 +162,9 @@ function ProductForm({
         </div>
       </div>
 
-      {!isCreate && inputs.images && (
+      {!isCreate && inputs.old_images && (
         <div className="row">
-          {inputs.images.map((img) => (
+          {inputs.old_images.map((img) => (
             <div className="col-sm-4 text-center mb-3" key={img.id}>
               <img
                 src={
@@ -175,9 +177,17 @@ function ProductForm({
               <div className="form-check mt-2">
                 <input
                   type="checkbox"
-                  name="delete_images[]"
-                  value={img.id}
-                  id={`delete_image_${img.id}`}
+                  checked={inputs.delete_images.includes(img.id)}
+                  onChange={(e) => {
+                    const checked = e.target.checked;
+
+                    setInputs((prev) => ({
+                      ...prev,
+                      delete_images: checked
+                        ? [...prev.delete_images, img.id]
+                        : prev.delete_images.filter((id) => id !== img.id),
+                    }));
+                  }}
                 />
                 <label htmlFor={`delete_image_${img.id}`}>
                   Delete this photo
@@ -209,6 +219,7 @@ function ProductForm({
           <button
             type="submit"
             className="btn btn-default"
+            disabled={hasErrors}
             style={{ margin: "20px 0px" }}
           >
             {isCreate ? "Create" : "Update"}

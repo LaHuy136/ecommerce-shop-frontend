@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { editProduct, updateProduct } from "../../api/products";
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
-import useProductForm from "../../hooks/useForm";
+import useForm from "../../hooks/useForm";
 import ProductForm from "../../components/ProductForm";
 function Edit() {
   const [product, setProduct] = useState({});
@@ -17,6 +17,7 @@ function Edit() {
     category_id: "",
     brand_id: "",
     images: [],
+    old_images: [],
     delete_images: [],
   };
 
@@ -28,7 +29,7 @@ function Edit() {
     fileErr,
     handleInput,
     handleFile,
-  } = useProductForm(initialValues);
+  } = useForm(initialValues);
 
   const showProduct = async (id) => {
     try {
@@ -64,7 +65,8 @@ function Edit() {
       description: product.description || "",
       category_id: product.category_id || "",
       brand_id: product.brand_id || "",
-      images: product.images || [],
+      images: [],
+      old_images: product.images || [],
       delete_images: [],
     });
   }, [product]);
@@ -115,18 +117,13 @@ function Edit() {
         formData.append("sale_percent", inputs.sale_percent);
       }
 
-      // if (inputs.images) {
-      // }
-
-      // inputs.images.forEach((file) => {
-      //   formData.append("images[]", file);
-      // });
-
-      // if (inputs.delete_images) {
-      inputs.delete_images.forEach((file) => {
-        formData.append(`delete_images[${product.images.id}]`, file);
+      inputs.images.forEach((file) => {
+        formData.append("images[]", file);
       });
-      // }
+
+      inputs.delete_images.forEach((id) => {
+        formData.append("delete_images[]", id);
+      });
 
       if (inputs.description) {
         formData.append("description", inputs.description);
@@ -148,9 +145,6 @@ function Edit() {
 
         if (status === 422) {
           setErrors(data.errors);
-          console.log(data.errors);
-        } else if (status === 500) {
-          setErrors(data.errors.images);
         } else {
           toast.error("Create product failed, please try again");
         }
@@ -174,6 +168,7 @@ function Edit() {
             fileErr={fileErr}
             onSubmit={handleSubmit}
             isCreate={false}
+            setInputs={setInputs}
           />
         </div>
       </div>
