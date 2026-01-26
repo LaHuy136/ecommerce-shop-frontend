@@ -21,7 +21,7 @@ export const shop = async (params = {}, page = 1) => {
 };
 
 export const show = async (id) => {
-  const res = await axios.get(`product/detail/${id}`);
+  const res = await axios.get(`/product/detail/${id}`);
   return res.data;
 };
 
@@ -35,6 +35,7 @@ export const product = async (param = {}, page = 1) => {
   return res.data;
 };
 
+// CRUD User Product
 export const createProduct = async (data) => {
   const res = await axios.post("/user/product/add", data);
   return res.data;

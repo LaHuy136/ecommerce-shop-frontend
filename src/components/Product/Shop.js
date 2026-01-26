@@ -52,10 +52,8 @@ function Shop() {
                 </div>
                 <div className="product-overlay">
                   <div className="overlay-content">
-                    <Link to={`/products/${product.id}`}>
+                    <Link to={`/product/detail/${product.id}`}>
                       <h2>${product.price}</h2>
-                    </Link>
-                    <Link to={`/products/${product.id}`}>
                       <p>{product.name}</p>
                     </Link>
                     <a href="#" className="btn btn-default add-to-cart">

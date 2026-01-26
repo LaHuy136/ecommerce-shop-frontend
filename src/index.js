@@ -12,7 +12,7 @@ import Checkout from "../src/components/Cart/Checkout";
 import Login from "../src/components/Member/Login";
 import Register from "../src/components/Member/Register";
 import Shop from "../src/components/Product/Shop";
-// import ProductDetail from "./pages/products/Show";
+import ProductDetail from "../src/components/Product/Detail";
 import Blog from "../src/components/Blog/Index";
 import ShowBlog from "../src/components/Blog/Detail";
 import Account from "../src/components/Account/Index";
@@ -30,7 +30,7 @@ root.render(
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/shop" element={<Shop />} />
-            {/* <Route path="/product/:id" element={<ProductDetail />} /> */}
+            <Route path="/product/detail/:id" element={<ProductDetail />} />
             <Route path="/blog" element={<Blog />} />
             <Route path="/blog/detail/:id" element={<ShowBlog />} />
             <Route path="/account" element={<Account />} />

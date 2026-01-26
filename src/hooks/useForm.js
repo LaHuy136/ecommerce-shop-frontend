@@ -13,7 +13,7 @@ function useForm(inititalValues) {
   };
 
   const handleFile = (e) => {
-    const files = Array.from(e.target.files);
+    const files = Array.from(e.target.files || []);
     if (!files.length) {
       setFileErr("");
       setInputs((prev) => ({
@@ -38,9 +38,10 @@ function useForm(inititalValues) {
         return;
       }
     }
+    const oldImages = inputs.old_images || [];
+    const deleteImages = inputs.delete_images || [];
 
-    const total =
-      inputs.old_images.length - inputs.delete_images.length + files.length;
+    const total = oldImages.length - deleteImages.length + files.length;
 
     if (total > 3) {
       setFileErr("Maximum 3 images per product");

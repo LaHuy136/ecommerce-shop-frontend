@@ -1,6 +1,6 @@
 import ProductForm from "../../components/ProductForm";
 import { useNavigate } from "react-router-dom";
-import useProductForm from "../../hooks/useForm";
+import useForm from "../../hooks/useForm";
 import { createProduct } from "../../api/products";
 import { toast } from "react-toastify";
 
@@ -19,7 +19,7 @@ function Create() {
   };
 
   const { inputs, errors, setErrors, fileErr, handleInput, handleFile } =
-    useProductForm(initialValues);
+    useForm(initialValues);
 
   const handleSubmit = async (e) => {
     e.preventDefault();

@@ -10,7 +10,7 @@ function ProductForm({
   onSubmit,
   isCreate = true,
 }) {
-  const hasErrors = Object.keys(errors).length > 0 || fileErr;
+  const hasErrors = Object.values(errors).some((err) => err) || !!fileErr;
 
   return (
     <form onSubmit={onSubmit}>
@@ -164,37 +164,41 @@ function ProductForm({
 
       {!isCreate && inputs.old_images && (
         <div className="row">
-          {inputs.old_images.map((img) => (
-            <div className="col-sm-4 text-center mb-3" key={img.id}>
-              <img
-                src={
-                  "http://ecommerce-shop/storage/products/85x84/" + img.image
-                }
-                alt="Product Image"
-                className="img-thumbnail"
-              />
+          {inputs.old_images?.length > 0 &&
+            inputs.old_images.map((img, index) => (
+              <div className="col-sm-4 text-center mb-3" key={img.id || index}>
+                <ul>
+                  <li>
+                    <img
+                      src={`http://ecommerce-shop.test/storage/products/85x84/${img.image}`}
+                      alt="Product Image"
+                      className="img-thumbnail"
+                    />
+                  </li>
+                  <li>
+                    <input
+                      id={`delete_image_${img.id}`}
+                      type="checkbox"
+                      checked={inputs.delete_images.includes(img.id)}
+                      onChange={(e) => {
+                        const checked = e.target.checked;
 
-              <div className="form-check mt-2">
-                <input
-                  type="checkbox"
-                  checked={inputs.delete_images.includes(img.id)}
-                  onChange={(e) => {
-                    const checked = e.target.checked;
+                        setInputs((prev) => ({
+                          ...prev,
+                          delete_images: checked
+                            ? [...prev.delete_images, img.id]
+                            : prev.delete_images.filter((id) => id !== img.id),
+                        }));
+                      }}
+                    />
 
-                    setInputs((prev) => ({
-                      ...prev,
-                      delete_images: checked
-                        ? [...prev.delete_images, img.id]
-                        : prev.delete_images.filter((id) => id !== img.id),
-                    }));
-                  }}
-                />
-                <label htmlFor={`delete_image_${img.id}`}>
-                  Delete this photo
-                </label>
+                    <label htmlFor={`delete_image_${img.id}`}>
+                      Delete this photo
+                    </label>
+                  </li>
+                </ul>
               </div>
-            </div>
-          ))}
+            ))}
         </div>
       )}
 
