@@ -1,25 +1,73 @@
-import ProductForm from "../../components/ProductForm";
-import { useNavigate } from "react-router-dom";
-import useProductForm from "../../hooks/useForm";
-import { createProduct } from "../../api/products";
+import { useEffect, useState } from "react";
+import { editProduct, updateProduct } from "../../api/products";
+import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
-
-function Create() {
-  const navigate = useNavigate();
+import useProductForm from "../../hooks/useForm";
+import ProductForm from "../../components/ProductForm";
+function Edit() {
+  const [product, setProduct] = useState({});
+  const { id } = useParams();
   const initialValues = {
     name: "",
     price: "",
-    condition: "new",
+    condition: "",
     sale_percent: "",
     company: "",
     description: "",
     category_id: "",
     brand_id: "",
     images: [],
+    delete_images: [],
   };
 
-  const { inputs, errors, setErrors, fileErr, handleInput, handleFile } =
-    useProductForm(initialValues);
+  const {
+    inputs,
+    setInputs,
+    errors,
+    setErrors,
+    fileErr,
+    handleInput,
+    handleFile,
+  } = useProductForm(initialValues);
+
+  const showProduct = async (id) => {
+    try {
+      const response = await editProduct(id);
+      setProduct(response.product);
+    } catch (error) {
+      if (error.response) {
+        const { status, data } = error.response;
+
+        if (status === 404) {
+          toast.error("Product not found");
+        } else {
+          toast.error(data?.message);
+        }
+      } else {
+        toast.error("Network error, please check your connection");
+      }
+    }
+  };
+  useEffect(() => {
+    showProduct(id);
+  }, [id]);
+
+  useEffect(() => {
+    if (!product) return;
+
+    setInputs({
+      name: product.name || "",
+      price: product.price || "",
+      condition: product.condition || "",
+      sale_percent: product.sale_percent || "",
+      company: product.company || "",
+      description: product.description || "",
+      category_id: product.category_id || "",
+      brand_id: product.brand_id || "",
+      images: product.images || [],
+      delete_images: [],
+    });
+  }, [product]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -49,10 +97,6 @@ function Create() {
       errorSubmits.brand_id = "Please choose product's brand";
     }
 
-    if (!inputs.images || inputs.images.length === 0) {
-      errorSubmits.images = "Please choose at least one image";
-    }
-
     if (Object.keys(errorSubmits).length > 0) {
       setErrors(errorSubmits);
       return;
@@ -71,29 +115,42 @@ function Create() {
         formData.append("sale_percent", inputs.sale_percent);
       }
 
-      inputs.images.forEach((file) => {
-        formData.append("images[]", file);
+      // if (inputs.images) {
+      // }
+
+      // inputs.images.forEach((file) => {
+      //   formData.append("images[]", file);
+      // });
+
+      // if (inputs.delete_images) {
+      inputs.delete_images.forEach((file) => {
+        formData.append(`delete_images[${product.images.id}]`, file);
       });
+      // }
 
       if (inputs.description) {
         formData.append("description", inputs.description);
       }
 
-      const response = await createProduct(formData);
-      if (response.data?.error) {
-        setErrors(response.data.error);
+      const response = await updateProduct(product.id, formData);
+      if (response.data?.errors) {
+        setErrors(response.data.errors);
+        console.log(response.data.errors);
         toast.error("Create product failed");
         return;
       }
 
-      toast.success(response.message);
-      navigate("/account/product/list", { replace: true });
+      toast.success(response.message || "Product updated successfully");
+      showProduct(product.id);
     } catch (error) {
       if (error.response) {
         const { status, data } = error.response;
 
         if (status === 422) {
           setErrors(data.errors);
+          console.log(data.errors);
+        } else if (status === 500) {
+          setErrors(data.errors.images);
         } else {
           toast.error("Create product failed, please try again");
         }
@@ -106,7 +163,7 @@ function Create() {
   return (
     <div className="col-sm-9">
       <div className="blog-post-area">
-        <h2 className="title text-center">Create Product</h2>
+        <h2 className="title text-center">Edit Product</h2>
 
         <div className="signup-form">
           <ProductForm
@@ -116,7 +173,7 @@ function Create() {
             handleFile={handleFile}
             fileErr={fileErr}
             onSubmit={handleSubmit}
-            isCreate={true}
+            isCreate={false}
           />
         </div>
       </div>
@@ -124,4 +181,4 @@ function Create() {
   );
 }
 
-export default Create;
+export default Edit;

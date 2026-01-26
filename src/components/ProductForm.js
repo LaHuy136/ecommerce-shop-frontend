@@ -1,4 +1,3 @@
-import { useState } from "react";
 import BrandSelect from "../components/selects/BrandSelect";
 import CategorySelect from "../components/selects/CategorySelect";
 function ProductForm({
@@ -155,8 +154,39 @@ function ProductForm({
             accept="image/*"
           />
           {fileErr && <span>{fileErr}</span>}
+          {errors?.images && (
+            <div className="invalid-feedback">{errors?.images}</div>
+          )}
         </div>
       </div>
+
+      {!isCreate && inputs.images && (
+        <div className="row">
+          {inputs.images.map((img) => (
+            <div className="col-sm-4 text-center mb-3" key={img.id}>
+              <img
+                src={
+                  "http://ecommerce-shop/storage/products/85x84/" + img.image
+                }
+                alt="Product Image"
+                className="img-thumbnail"
+              />
+
+              <div className="form-check mt-2">
+                <input
+                  type="checkbox"
+                  name="delete_images[]"
+                  value={img.id}
+                  id={`delete_image_${img.id}`}
+                />
+                <label htmlFor={`delete_image_${img.id}`}>
+                  Delete this photo
+                </label>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
 
       <div className="form-group">
         <label className="col-md-12">Description</label>
