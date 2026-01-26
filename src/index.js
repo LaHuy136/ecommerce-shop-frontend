@@ -18,6 +18,7 @@ import ShowBlog from "./pages/blogs/Show";
 import Account from "./pages/accounts/Index";
 import Product from "./pages/member/Product";
 import Create from "./pages/products/Create";
+import Edit from "./pages/products/Edit";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -36,7 +37,7 @@ root.render(
             <Route path="/account/product/list" element={<Product />} />
             <Route path="/account/product/add" element={<Create />} />
             <Route path="/account/product/:id" element={null} />
-            <Route path="/account/product/edit/:id" element={null} />
+            <Route path="/account/product/:id/edit" element={<Edit />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
           </Routes>

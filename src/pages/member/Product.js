@@ -44,7 +44,7 @@ function Product() {
       toast.success(response.message);
       setProducts((prev) => prev.filter((p) => p.id !== id));
     } catch (error) {
-      toast.error("Delete product failed");
+      toast.error("Delete product failed: ", error);
     }
   };
   return (
@@ -78,7 +78,7 @@ function Product() {
                     <td>{product.id}</td>
 
                     <td className="cart_product">
-                      <Link to={`/account/product/${product.id}`}>
+                      <Link to={`/account/product/${product.id}/edit`}>
                         <img
                           src={
                             "http://ecommerce-shop.test/storage/products/85x84/" +
@@ -100,7 +100,7 @@ function Product() {
                     <td>
                       <Link
                         className="btn btn-default"
-                        to={`/account/${product.id}/edit`}
+                        to={`/account/product/${product.id}/edit`}
                       >
                         <i className="fa" style={{ fontSize: 18 }}>
                           &#xf044;

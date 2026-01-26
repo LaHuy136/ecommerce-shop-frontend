@@ -1,4 +1,3 @@
-import { param } from "jquery";
 import axios from "../services/axios";
 
 export const home = async (params = {}, page = 1) => {
@@ -38,6 +37,16 @@ export const product = async (param = {}, page = 1) => {
 
 export const createProduct = async (data) => {
   const res = await axios.post("/user/product/add", data);
+  return res.data;
+};
+
+export const editProduct = async (id) => {
+  const res = await axios.get(`/user/product/${id}/edit`);
+  return res.data;
+};
+
+export const updateProduct = async (id, data) => {
+  const res = await axios.patch(`/user/product/update/${id}`, data);
   return res.data;
 };
 
