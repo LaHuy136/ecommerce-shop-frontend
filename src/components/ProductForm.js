@@ -4,7 +4,7 @@ function ProductForm({
   inputs,
   setInputs,
   handleInput,
-  handleFile,
+  handleFilesProduct,
   errors,
   fileErr,
   onSubmit,
@@ -150,7 +150,7 @@ function ProductForm({
           <input
             type="file"
             name="images[]"
-            onChange={handleFile}
+            onChange={handleFilesProduct}
             className="form-control form-control-line"
             multiple
             accept="image/*"

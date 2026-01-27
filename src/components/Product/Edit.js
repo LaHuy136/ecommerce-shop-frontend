@@ -28,7 +28,7 @@ function Edit() {
     setErrors,
     fileErr,
     handleInput,
-    handleFile,
+    handleFilesProduct,
   } = useForm(initialValues);
 
   const showProduct = async (id) => {
@@ -164,7 +164,7 @@ function Edit() {
             inputs={inputs}
             errors={errors}
             handleInput={handleInput}
-            handleFile={handleFile}
+            handleFilesProduct={handleFilesProduct}
             fileErr={fileErr}
             onSubmit={handleSubmit}
             isCreate={false}

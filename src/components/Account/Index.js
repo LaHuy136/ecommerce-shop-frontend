@@ -35,9 +35,35 @@ function Account() {
     handleFile,
   } = useAccountForm(initialValues);
 
+  const loadProfile = async () => {
+    try {
+      const response = await index();
+      setProfile(response.data);
+    } catch (error) {
+      toast.error("Failed to load profile: ", error);
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    loadProfile();
+  }, []);
+
+  useEffect(() => {
+    if (!profile) return;
+
+    setInputs({
+      email: profile.email || "",
+      name: profile.name || "",
+      phone: profile.phone || "",
+      country_id: profile.country_id || "",
+      password: "",
+      password_confirmation: "",
+    });
+  }, [profile]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(inputs);
     let errorSubmits = {};
 
     if (inputs.password) {
@@ -67,7 +93,6 @@ function Account() {
         formData.append("password", inputs.password);
         formData.append("password_confirmation", inputs.password_confirmation);
       }
-
       if (file) {
         formData.append("avatar", file);
       }
@@ -78,15 +103,12 @@ function Account() {
       toast.success("Profile updated successfully");
       loadProfile();
     } catch (error) {
+      console.log(error);
       if (error.response) {
         const { status, data } = error.response;
 
         if (status === 422) {
-          const formattedErrors = {};
-          Object.keys(data.errors).forEach((key) => {
-            formattedErrors[key] = data.errors[key][0];
-          });
-          setErrors(formattedErrors);
+          setErrors(data.errors);
         } else {
           toast.error("Create product failed, please try again");
         }
@@ -95,33 +117,6 @@ function Account() {
       }
     }
   };
-  const loadProfile = async () => {
-    try {
-      const response = await index();
-      setProfile(response.data);
-      console.log(response.data);
-    } catch (error) {
-      toast.error("Failed to load profile: ", error);
-      console.log(error);
-    }
-  };
-
-  useEffect(() => {
-    loadProfile();
-  }, []);
-
-  useEffect(() => {
-    if (!profile) return;
-
-    setInputs({
-      email: profile.email || "",
-      name: profile.name || "",
-      phone: profile.phone || "",
-      country_id: profile.country_id || "",
-      password: "",
-      password_confirmation: "",
-    });
-  }, [profile]);
 
   return (
     <section>
@@ -138,6 +133,7 @@ function Account() {
               fileErr={fileErr}
               onSubmit={handleSubmit}
               isRegister={false}
+              setInputs={setInputs}
             />
           </div>
         </div>

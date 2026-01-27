@@ -18,8 +18,14 @@ function Create() {
     images: [],
   };
 
-  const { inputs, errors, setErrors, fileErr, handleInput, handleFile } =
-    useForm(initialValues);
+  const {
+    inputs,
+    errors,
+    setErrors,
+    fileErr,
+    handleInput,
+    handleFilesProduct,
+  } = useForm(initialValues);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -113,7 +119,7 @@ function Create() {
             inputs={inputs}
             errors={errors}
             handleInput={handleInput}
-            handleFile={handleFile}
+            handleFilesProduct={handleFilesProduct}
             fileErr={fileErr}
             onSubmit={handleSubmit}
             isCreate={true}
