@@ -1,9 +1,11 @@
 import { Link, useNavigate } from "react-router-dom";
 import logo from "../../assets/images/home/logo.png";
 import { useAuth } from "../../context/AuthContext";
+import { useCart } from "../../context/CartContext";
 function Header() {
   const isLogin = !!localStorage.getItem("user");
   const { logout } = useAuth();
+  const { cartCount } = useCart();
   return (
     <header id="header">
       <div className="header_top">
@@ -135,6 +137,9 @@ function Header() {
                   <li>
                     <Link to="/cart">
                       <i className="fa fa-shopping-cart"></i> Cart
+                      {cartCount > 0 && (
+                        <span className="cart-badge"> ({cartCount})</span>
+                      )}
                     </Link>
                   </li>
 

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { home } from "./api/products";
 import { Link, useSearchParams } from "react-router-dom";
-
+import { useCart } from "./context/CartContext";
 function Home() {
   const [featuredProducts, setFeaturedProducts] = useState([]);
   const [recommendProducts, setRecommendProducts] = useState([]);
@@ -31,7 +31,7 @@ function Home() {
     product.images?.[0]?.image
       ? `http://ecommerce-shop.test/storage/products/full/${product.images[0].image}`
       : "";
-
+  const { addToCart } = useCart();
   return (
     <div className="col-sm-9 padding-right">
       {featuredProducts.length === 0 && (
@@ -49,11 +49,16 @@ function Home() {
                 <div className="single-products">
                   <div className="productinfo text-center">
                     <img src={renderImage(product)} alt={product.name} />
-                    <h2>${product.price}</h2>
-                    <p>{product.name}</p>
-                    <a href="#" className="btn btn-default add-to-cart">
+                    <Link to={`/product/detail/${product.id}`}>
+                      <h2>${product.price}</h2>
+                      <p>{product.name}</p>
+                    </Link>
+                    <button
+                      onClick={() => addToCart(product)}
+                      className="btn btn-default add-to-cart"
+                    >
                       <i className="fa fa-shopping-cart" /> Add to cart
-                    </a>
+                    </button>
                   </div>
 
                   <div className="product-overlay">
@@ -62,9 +67,12 @@ function Home() {
                         <h2>${product.price}</h2>
                         <p>{product.name}</p>
                       </Link>
-                      <a href="#" className="btn btn-default add-to-cart">
+                      <button
+                        onClick={() => addToCart(product)}
+                        className="btn btn-default add-to-cart"
+                      >
                         <i className="fa fa-shopping-cart" /> Add to cart
-                      </a>
+                      </button>
                     </div>
                   </div>
                 </div>
