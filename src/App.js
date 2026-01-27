@@ -11,7 +11,7 @@ import MenuAccount from "./components/Layout/MenuAccount";
 function App(props) {
   const location = useLocation();
 
-  const hideMenuPaths = ["/login", "/register"];
+  const hideMenuPaths = ["/login", "/register", "/cart"];
 
   const shouldHideMenu = hideMenuPaths.some((path) =>
     location.pathname.startsWith(path),
