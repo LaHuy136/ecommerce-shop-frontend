@@ -12,7 +12,7 @@ function useForm(inititalValues) {
     setErrors((prev) => ({ ...prev, [name]: null }));
   };
 
-  const handleFile = (e) => {
+  const handleFilesProduct = (e) => {
     const files = Array.from(e.target.files || []);
     if (!files.length) {
       setFileErr("");
@@ -55,6 +55,30 @@ function useForm(inititalValues) {
     }));
   };
 
+  const handleFile = (e) => {
+    const file = e.target.files?.[0];
+    if (!file) {
+      setFile("");
+      setFileErr("");
+      return;
+    }
+
+    const allowTypes = ["image/png", "image/jpg", "image/jpeg"];
+
+    if (!allowTypes.includes(file.type)) {
+      setFileErr("Please choose image (png, jpg, jpeg)");
+      return;
+    }
+
+    if (file.size > 1024 * 1024) {
+      setFileErr("Please choose size image < 1MB");
+      return;
+    }
+
+    setFileErr("");
+    setFile(file);
+  };
+
   return {
     inputs,
     setInputs,
@@ -64,6 +88,7 @@ function useForm(inititalValues) {
     fileErr,
     handleInput,
     handleFile,
+    handleFilesProduct,
   };
 }
 

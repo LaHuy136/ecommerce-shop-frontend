@@ -67,7 +67,7 @@ function MenuLeft() {
           </div>
         </div> */}
 
-        <div className="shipping text-center">
+        <div className="shipping text-center" style={{ marginBottom: "20px" }}>
           <img src={shippingBanner} alt="" />
         </div>
       </div>
