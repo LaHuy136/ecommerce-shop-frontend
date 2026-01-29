@@ -1,17 +1,18 @@
 function CommentItem({
   comment,
   comments,
+  parentId,
   setParentId,
-  scrollToCommentBox,
-  textareaRef,
+  textarea,
+  setTextArea,
+  handleSubmit,
+  errors,
   avatarDefault,
 }) {
   const childComments = comments.filter((c) => c.parent_id === comment.id);
 
   const handleReply = () => {
     setParentId(comment.id);
-    scrollToCommentBox();
-    textareaRef.current?.focus();
   };
 
   return (
@@ -51,6 +52,44 @@ function CommentItem({
           <i className="fa fa-reply"></i> Reply
         </button>
 
+        {parentId === comment.id && (
+          <div className="replay-box">
+            <div className="post-comment">
+              <form onSubmit={handleSubmit}>
+                <textarea
+                  name="content"
+                  rows="5"
+                  placeholder=" Your comment"
+                  value={textarea}
+                  onChange={(e) => setTextArea(e.target.value)}
+                ></textarea>
+
+                <p className="text-muted">
+                  Replying to comment #{parentId}
+                  <button
+                    className="btn btn-danger"
+                    onClick={() => {
+                      setParentId(null);
+                    }}
+                    style={{ margin: "10px 10px" }}
+                  >
+                    Cancel
+                  </button>
+                </p>
+
+                <span>{errors}</span>
+                <button
+                  id="submit-comment"
+                  className="btn btn-primary"
+                  style={{ padding: "10px", fontSize: "12px" }}
+                >
+                  Post comment
+                </button>
+              </form>
+            </div>
+          </div>
+        )}
+
         {childComments.length > 0 && (
           <ul className="media-list">
             {childComments.map((child) => (
@@ -58,9 +97,12 @@ function CommentItem({
                 key={child.id}
                 comment={child}
                 comments={comments}
+                parentId={parentId}
                 setParentId={setParentId}
-                scrollToCommentBox={scrollToCommentBox}
-                textareaRef={textareaRef}
+                handleSubmit={handleSubmit}
+                textarea={textarea}
+                setTextArea={setTextArea}
+                errors={errors}
                 avatarDefault={avatarDefault}
               />
             ))}

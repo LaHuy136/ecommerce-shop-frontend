@@ -153,12 +153,12 @@ function Cart() {
                           <input type="text" />
                         </li>
                       </ul>
-                      <a className="btn btn-default update" href="">
+                      <Link className="btn btn-default update" to={""}>
                         Get Quotes
-                      </a>
-                      <a className="btn btn-default check_out" href="">
+                      </Link>
+                      <Link className="btn btn-default check_out" to={""}>
                         Continue
-                      </a>
+                      </Link>
                     </div>
                   </div>
                   <div className="col-sm-6">
@@ -177,7 +177,7 @@ function Cart() {
                           Total <span>${total}</span>
                         </li>
                       </ul>
-                      <Link className="btn btn-default update" to="">
+                      <Link className="btn btn-default update" to={""}>
                         Update
                       </Link>
                       <Link

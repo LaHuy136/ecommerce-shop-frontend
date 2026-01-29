@@ -22,7 +22,7 @@ function Show() {
   const [nextBlog, setNextBlog] = useState(null);
 
   const [textarea, setTextArea] = useState("");
-  const textareaRef = useRef(null);
+  // const textareaRef = useRef(null);
 
   const [errors, setErrors] = useState("");
 
@@ -79,12 +79,12 @@ function Show() {
     showBlog(id);
   }, [id]);
 
-  const scrollToCommentBox = () => {
-    textareaRef.current?.scrollIntoView({
-      behavior: "smooth",
-      block: "center",
-    });
-  };
+  // const scrollToCommentBox = () => {
+  //   textareaRef.current?.scrollIntoView({
+  //     behavior: "smooth",
+  //     block: "center",
+  //   });
+  // };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -216,9 +216,11 @@ function Show() {
         {blog.comments_count > 0 && <h2> {blog.comments_count} RESPONSES</h2>}
         <CommentList
           comments={comments}
+          parentId={parentId}
           setParentId={setParentId}
-          scrollToCommentBox={scrollToCommentBox}
-          textareaRef={textareaRef}
+          textArea={textarea}
+          setTextArea={setTextArea}
+          handleSubmit={handleSubmit}
           avatarDefault={avatarDefault}
         />
       </div>
@@ -239,9 +241,8 @@ function Show() {
               </div>
               <span>*</span>
 
-              <form onSubmit={handleSubmit} method="POST">
+              <form onSubmit={handleSubmit}>
                 <textarea
-                  ref={textareaRef}
                   name="content"
                   rows="5"
                   placeholder=" Your comment"
@@ -256,11 +257,6 @@ function Show() {
                       className="btn btn-link"
                       onClick={() => {
                         setParentId(null);
-                        window.scrollTo({
-                          top: 150,
-                          block: "center",
-                          behavior: "smooth",
-                        });
                       }}
                     >
                       Cancel
