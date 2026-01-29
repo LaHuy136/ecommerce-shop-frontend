@@ -2,10 +2,12 @@ import CommentItem from "./CommentItem";
 
 function CommentList({
   comments,
+  parentId,
   setParentId,
-  scrollToCommentBox,
-  textareaRef,
+  textArea,
+  setTextArea,
   avatarDefault,
+  handleSubmit,
 }) {
   const parentComments = comments.filter((c) => !c.parent_id);
 
@@ -16,9 +18,11 @@ function CommentList({
           key={parent.id}
           comment={parent}
           comments={comments}
+          parentId={parentId}
           setParentId={setParentId}
-          scrollToCommentBox={scrollToCommentBox}
-          textareaRef={textareaRef}
+          textArea={textArea}
+          setTextArea={setTextArea}
+          handleSubmit={handleSubmit}
           avatarDefault={avatarDefault}
         />
       ))}

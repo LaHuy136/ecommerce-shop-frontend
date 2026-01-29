@@ -27,7 +27,7 @@ export const CartProvider = ({ children }) => {
   };
 
   // Load cart from API
-  const featchCartProducts = async () => {
+  const fetchCartProducts = async () => {
     const localCart = getLocalCart();
 
     if (localCart.length === 0) {
@@ -55,7 +55,7 @@ export const CartProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    featchCartProducts();
+    fetchCartProducts();
   }, []);
 
   const getCartCount = (products) => {
@@ -145,7 +145,7 @@ export const CartProvider = ({ children }) => {
         decrease,
         remove,
         clearCart,
-        reloadCart: featchCartProducts,
+        reloadCart: fetchCartProducts,
       }}
     >
       {children}

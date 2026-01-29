@@ -80,14 +80,14 @@ function Home() {
                 <div className="choose">
                   <ul className="nav nav-pills nav-justified">
                     <li>
-                      <a href="#">
+                      <Link to={""}>
                         <i className="fa fa-plus-square" /> Add to wishlist
-                      </a>
+                      </Link>
                     </li>
                     <li>
-                      <a href="#">
+                      <Link to={""}>
                         <i className="fa fa-plus-square" /> Add to compare
-                      </a>
+                      </Link>
                     </li>
                   </ul>
                 </div>
@@ -142,9 +142,9 @@ function Home() {
                           <img src={renderImage(product)} alt={product.name} />
                           <h2>${product.price}</h2>
                           <p>{product.name}</p>
-                          <a href="#" className="btn btn-default add-to-cart">
+                          <Link to={""} className="btn btn-default add-to-cart">
                             <i className="fa fa-shopping-cart" /> Add to cart
-                          </a>
+                          </Link>
                         </div>
                       </div>
                     </div>
