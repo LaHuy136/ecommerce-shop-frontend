@@ -1,18 +1,20 @@
-import Modal from "react-bootstrap/Modal";
-import Button from "react-bootstrap/Button";
+import "../../../src/assets/css/zoomImg.css";
+function ZoomImg({ image, onClose }) {
+  if (!image) return null;
 
-function PopFullImage({ show, onHide, children }) {
   return (
-    <Modal show={show} onHide={onHide} size="lg" centered>
-      <Modal.Header closeButton />
-      <Modal.Body className="text-center">{children}</Modal.Body>
-      <Modal.Footer>
-        <Button variant="secondary" onClick={onHide}>
-          Close
-        </Button>
-      </Modal.Footer>
-    </Modal>
+    <div className="zoom-overlay" onClick={onClose}>
+      <div className="zoom-content" onClick={(e) => e.stopPropagation()}>
+        <span className="zoom-close" onClick={onClose}>
+          ✕
+        </span>
+        <img
+          src={`http://ecommerce-shop.test/storage/products/full/${image}`}
+          alt="Zoom Product"
+        />
+      </div>
+    </div>
   );
 }
 
-export default PopFullImage;
+export default ZoomImg;

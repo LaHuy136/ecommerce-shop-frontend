@@ -1,21 +1,32 @@
 import { useParams } from "react-router-dom";
-import { show } from "../../api/products";
 import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
+import { show } from "../../api/products";
 import shareImg from "../../assets/images/product-details/share.png";
+import ratingImg from "../../assets/images/product-details/rating.png";
 import gallery1 from "../../assets/images/home/gallery1.jpg";
 import gallery2 from "../../assets/images/home/gallery2.jpg";
 import gallery3 from "../../assets/images/home/gallery3.jpg";
 import gallery4 from "../../assets/images/home/gallery4.jpg";
-import PopFullImage from "./ZoomImg";
+import ZoomImg from "./ZoomImg";
 import CarouselImg from "./Carouselmg";
 import "react-multi-carousel/lib/styles.css";
+import { useCart } from "../../context/CartContext";
 
 function ProductDetail() {
-  //   const [showPopImage, setShowPopImage] = useState(false);
   const [product, setProduct] = useState({ images: [] });
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [showZoom, setShowZoom] = useState(false);
+  const imgRender = "http://ecommerce-shop.test/storage/products";
+  const { addToCart } = useCart();
 
   const { id } = useParams();
+
+  const ucFirst = (str) => {
+    if (typeof str !== "string" || str.length === 0) return "";
+    return str.charAt(0).toUpperCase() + str.slice(1);
+  };
+
   const showProduct = async (productId) => {
     try {
       const response = await show(productId);
@@ -40,28 +51,27 @@ function ProductDetail() {
     showProduct(id);
   }, [id]);
 
+  useEffect(() => {
+    if (product.images && product.images.length > 0) {
+      setSelectedImage(product.images[0].image);
+    }
+  }, [product]);
+
   return (
     <>
       <div className="product-details">
         <div className="col-sm-5">
           {/* Main Image */}
           <div className="view-product">
-            {/* <PopFullImage
-              show={showPopImage}
-              onHide={() => setShowPopImage(false)}
-            >
-              <img
-                src={
-                  product.images?.[0]
-                    ? `http://ecommerce-shop.test/storage/products/full/${product.images[0].img}`
-                    : "https://picsum.photos/200"
-                }
-                alt="Image Product"
+            {showZoom && (
+              <ZoomImg
+                image={selectedImage}
+                onClose={() => setShowZoom(false)}
               />
-            </PopFullImage> */}
+            )}
 
             <img
-              src={`http://ecommerce-shop.test/storage/products/full/${product.images?.[0]?.image}`}
+              src={`${imgRender}/full/${selectedImage}`}
               alt="Image Product"
             />
           </div>
@@ -69,11 +79,22 @@ function ProductDetail() {
           {/* Carousel Image */}
           <div className="product-carousel">
             <CarouselImg>
-              {product.images.map((img, index) => (
-                <div key={img.id || index}>
+              {product.images.map((img) => (
+                <div
+                  key={img.id}
+                  onClick={() => setShowZoom(true)}
+                  onMouseEnter={() => setSelectedImage(img.image)}
+                >
                   <img
-                    src={`http://ecommerce-shop.test/storage/products/85x84/${img.image}`}
-                    alt="Image Product"
+                    src={`${imgRender}/85x84/${img.image}`}
+                    alt={product.name}
+                    style={{
+                      cursor: "zoom-in",
+                      border:
+                        selectedImage === img.image
+                          ? "2px solid #fe980f"
+                          : "1px solid #ddd",
+                    }}
                   />
                 </div>
               ))}
@@ -85,13 +106,15 @@ function ProductDetail() {
           <div className="product-information product-image-wrapper">
             <h2>{product.name}</h2>
 
-            <div className="row items-center">
-              {/* src="{{ asset('frontend/images/product-details/rating.png') }}" alt="Rating Image..." />  */}
-
+            <div>
               <span>
-                <span className="price">US ${product.price}</span>
+                <span className="price">${product.price}</span>
 
-                <button type="button" className="btn btn-default add-to-cart">
+                <button
+                  type="button"
+                  onClick={() => addToCart(product)}
+                  className="btn btn-default add-to-cart"
+                >
                   <i className="fa fa-shopping-cart"></i>
                   Add to cart
                 </button>
@@ -99,23 +122,25 @@ function ProductDetail() {
             </div>
 
             <p>
-              <b>Status:</b>
-              {product.status}
+              <b>Status: </b>
+              {ucFirst(product.status)}
             </p>
 
             <p>
-              <b>Condition:</b>
-              {product.condition}
+              <b>Condition: </b>
+              {ucFirst(product.condition)}
 
               {product.condition === "sale" && (
-                <span className="sale-percent">{product.sale_percent}%</span>
+                <span className="sale-percent">{product.sale_percent} %</span>
               )}
             </p>
 
             <p>
-              <b>Brand:</b>
-              {/* {product.brand.name} */}
+              <b>Brand: </b>
+              {product.brand?.name}
             </p>
+
+            <img src={ratingImg} alt="Rating Image..." />
 
             <img
               src={shareImg}

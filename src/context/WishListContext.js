@@ -34,12 +34,9 @@ export const WishListProvider = ({ children }) => {
     }
 
     try {
-      const response = await axios.post(
-        "http://127.0.0.1:8000/api/cart/products",
-        {
-          items: wishListLocal,
-        },
-      );
+      const response = await axios.post("http://127.0.0.1:8000/api/products", {
+        items: wishListLocal,
+      });
 
       const fetchedProducts = response.data.products;
 
