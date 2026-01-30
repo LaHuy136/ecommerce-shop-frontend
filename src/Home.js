@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { home } from "./api/products";
 import { Link, useSearchParams } from "react-router-dom";
 import { useCart } from "./context/CartContext";
+import { useWishList } from "./context/WishListContext";
+import { toast } from "react-toastify";
 function Home() {
   const [featuredProducts, setFeaturedProducts] = useState([]);
   const [recommendProducts, setRecommendProducts] = useState([]);
@@ -31,7 +33,10 @@ function Home() {
     product.images?.[0]?.image
       ? `http://ecommerce-shop.test/storage/products/full/${product.images[0].image}`
       : "";
+
   const { addToCart } = useCart();
+  const { addToWishList } = useWishList();
+
   return (
     <div className="col-sm-9 padding-right">
       {featuredProducts.length === 0 && (
@@ -80,14 +85,14 @@ function Home() {
                 <div className="choose">
                   <ul className="nav nav-pills nav-justified">
                     <li>
-                      <Link to={""}>
+                      <button onClick={() => addToWishList(product)}>
                         <i className="fa fa-plus-square" /> Add to wishlist
-                      </Link>
+                      </button>
                     </li>
                     <li>
-                      <Link to={""}>
+                      <button onClick={() => {}}>
                         <i className="fa fa-plus-square" /> Add to compare
-                      </Link>
+                      </button>
                     </li>
                   </ul>
                 </div>

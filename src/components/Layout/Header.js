@@ -2,10 +2,12 @@ import { Link } from "react-router-dom";
 import logo from "../../assets/images/home/logo.png";
 import { useAuth } from "../../context/AuthContext";
 import { useCart } from "../../context/CartContext";
+import { useWishList } from "../../context/WishListContext";
 function Header() {
   const isLogin = !!localStorage.getItem("user");
   const { logout } = useAuth();
   const { cartCount } = useCart();
+  const { wishListCount } = useWishList();
   return (
     <header id="header">
       <div className="header_top">
@@ -123,16 +125,19 @@ function Header() {
                   )}
 
                   <li>
-                    <Link href="">
+                    <Link to="/wishlist">
                       <i className="fa fa-star"></i> Wishlist
+                      {wishListCount > 0 && (
+                        <span className="cart-badge"> ({wishListCount})</span>
+                      )}
                     </Link>
                   </li>
 
-                  <li>
+                  {/* <li>
                     <Link to="/checkout">
                       <i className="fa fa-crosshairs"></i> Checkout
                     </Link>
-                  </li>
+                  </li> */}
 
                   <li>
                     <Link to="/cart">
