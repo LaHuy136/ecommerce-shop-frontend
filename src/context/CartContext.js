@@ -40,12 +40,9 @@ export const CartProvider = ({ children }) => {
     }
 
     try {
-      const response = await axios.post(
-        "http://127.0.0.1:8000/api/cart/products",
-        {
-          items: localCart,
-        },
-      );
+      const response = await axios.post("http://127.0.0.1:8000/api/products", {
+        items: localCart,
+      });
 
       const data = response.data;
 

@@ -3,7 +3,7 @@ import Carousel from "react-multi-carousel";
 function CarouselImg({ children }) {
   const responsive = {
     desktop: {
-      breakpoint: { max: 1024, min: 512 },
+      breakpoint: { max: 3000, min: 1024 },
       items: 3,
       slidesToSlide: 1,
     },
