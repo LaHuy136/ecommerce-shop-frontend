@@ -11,6 +11,7 @@ import Home from "./Home";
 import Login from "../src/components/Member/Login";
 import Register from "../src/components/Member/Register";
 import Cart from "./components/Cart/Cart";
+import Wishlist from "./components/Wishlist/Wishlist";
 import Shop from "../src/components/Product/Shop";
 import ProductDetail from "../src/components/Product/Detail";
 import Blog from "../src/components/Blog/Index";
@@ -19,6 +20,7 @@ import Account from "../src/components/Account/Index";
 import Product from "../src/components/Member/Product";
 import Create from "../src/components/Product/Create";
 import Edit from "../src/components/Product/Edit";
+import { WishListProvider } from "./context/WishListContext";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -26,23 +28,26 @@ root.render(
     <BrowserRouter>
       <AuthProvider>
         <CartProvider>
-          <App>
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/shop" element={<Shop />} />
-              <Route path="/product/detail/:id" element={<ProductDetail />} />
-              <Route path="/blog" element={<Blog />} />
-              <Route path="/blog/detail/:id" element={<ShowBlog />} />
-              <Route path="/account" element={<Account />} />
-              <Route path="/account/product/list" element={<Product />} />
-              <Route path="/account/product/add" element={<Create />} />
-              <Route path="/account/product/:id" element={null} />
-              <Route path="/account/product/:id/edit" element={<Edit />} />
-              <Route path="/cart" element={<Cart />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/register" element={<Register />} />
-            </Routes>
-          </App>
+          <WishListProvider>
+            <App>
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/shop" element={<Shop />} />
+                <Route path="/product/detail/:id" element={<ProductDetail />} />
+                <Route path="/blog" element={<Blog />} />
+                <Route path="/blog/detail/:id" element={<ShowBlog />} />
+                <Route path="/account" element={<Account />} />
+                <Route path="/account/product/list" element={<Product />} />
+                <Route path="/account/product/add" element={<Create />} />
+                <Route path="/account/product/:id" element={null} />
+                <Route path="/account/product/:id/edit" element={<Edit />} />
+                <Route path="/cart" element={<Cart />} />
+                <Route path="/wishlist" element={<Wishlist />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/register" element={<Register />} />
+              </Routes>
+            </App>
+          </WishListProvider>
         </CartProvider>
       </AuthProvider>
     </BrowserRouter>

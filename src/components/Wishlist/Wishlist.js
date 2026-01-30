@@ -1,42 +1,13 @@
-import { useState, useEffect } from "react";
-import { Link, useSearchParams } from "react-router-dom";
-import { shop } from "../../api/products";
-import { useWishList } from "../../context/WishListContext";
 import { useCart } from "../../context/CartContext";
-
-function Shop() {
-  const [products, setProducts] = useState([]);
-  const [pagination, setPagination] = useState(null);
-  const [searchParams, setSearchParams] = useSearchParams();
-
-  const currentPage = Number(searchParams.get("page")) || 1;
-
-  const fetchProducts = async (page = 1) => {
-    try {
-      const response = await shop({}, page);
-
-      setProducts(response.products.data);
-      setPagination(response.products || []);
-    } catch (error) {
-      console.error("Fetch shop products error:", error);
-    }
-  };
-
-  useEffect(() => {
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
-    fetchProducts(currentPage);
-  }, [currentPage]);
-
+import { useWishList } from "../../context/WishListContext";
+import { Link } from "react-router-dom";
+function Wishlist() {
   const { addToCart } = useCart();
-  const { addToWishList } = useWishList();
-
+  const { products, remove } = useWishList();
   return (
     <div className="col-sm-9 padding-right">
       <div className="features_items">
-        <h2 className="title text-center">Features Items</h2>
+        <h2 className="title text-center">WishList Items</h2>
         {products.map((product) => (
           <div className="col-sm-4" key={product.id}>
             <div className="product-image-wrapper">
@@ -76,22 +47,23 @@ function Shop() {
               <div className="choose">
                 <ul className="nav nav-pills nav-justified">
                   <li>
-                    <button onClick={() => addToWishList(product)}>
-                      <i className="fa fa-plus-square" /> Add to wishlist
+                    <button
+                      onClick={() => {
+                        remove(product.id);
+                      }}
+                      className="btn btn-default"
+                    >
+                      <i className="fa fa-times"></i> Remove from wishlist
                     </button>
                   </li>
-                  <li>
-                    <button onClick={() => {}}>
-                      <i className="fa fa-plus-square" /> Add to compare
-                    </button>
-                  </li>
+                  <li>{""}</li>
                 </ul>
               </div>
             </div>
           </div>
         ))}
       </div>
-      <ul className="pagination">
+      {/* <ul className="pagination">
         {pagination?.links.map((link, index) => (
           <li key={index} className={link.active ? "active" : ""}>
             {link.page ? (
@@ -111,9 +83,9 @@ function Shop() {
             )}
           </li>
         ))}
-      </ul>
+      </ul> */}
     </div>
   );
 }
 
-export default Shop;
+export default Wishlist;

@@ -1,5 +1,6 @@
 import axios from "axios";
 import { createContext, useContext, useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
 const CartContext = createContext();
 
@@ -32,6 +33,7 @@ export const CartProvider = ({ children }) => {
 
     if (localCart.length === 0) {
       setProducts([]);
+      setCartCount(0);
       setTotal(0);
       setLoading(false);
       return;
@@ -45,8 +47,11 @@ export const CartProvider = ({ children }) => {
         },
       );
 
-      setProducts(response.data.products);
-      setTotal(response.data.total);
+      const data = response.data;
+
+      setProducts(data.products);
+      setTotal(data.total);
+      setCartCount(getCartCount(data.products));
     } catch (error) {
       console.log("Fetch cart error", error);
     } finally {
@@ -66,7 +71,7 @@ export const CartProvider = ({ children }) => {
     const exist = products.find((p) => p.id === product.id);
 
     let newProducts;
-    console.log(newProducts);
+
     if (exist) {
       newProducts = products.map((p) =>
         p.id === product.id
@@ -90,6 +95,8 @@ export const CartProvider = ({ children }) => {
     saveLocalCart(newProducts);
     setTotal(calcTotal(newProducts));
     setCartCount(getCartCount(newProducts));
+
+    toast.success("Added product to your cart");
   };
 
   //   Actions
@@ -124,6 +131,8 @@ export const CartProvider = ({ children }) => {
     saveLocalCart(newProducts);
     setTotal(calcTotal(newProducts));
     setCartCount(getCartCount(newProducts));
+
+    toast.success("Removed product from your cart");
   };
 
   const clearCart = () => {
