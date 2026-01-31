@@ -1,7 +1,24 @@
 import { Link } from "react-router-dom";
 import { useCart } from "../../context/CartContext";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import {
+  fetchCartProducts,
+  increase,
+  decrease,
+  remove,
+  clearCart,
+} from "../../store/cartSlice";
+
 function Cart() {
-  const { products, total, increase, decrease, remove } = useCart();
+  // const { products, total, increase, decrease, remove } = useCart();
+  const dispatch = useDispatch();
+  const { products, total } = useSelector((state) => state.cart);
+
+  useEffect(() => {
+    dispatch(fetchCartProducts);
+  }, [dispatch]);
+
   return (
     <section id="cart_items">
       <div className="container">
@@ -54,7 +71,7 @@ function Cart() {
                           <button
                             type="button"
                             className="qty-btn"
-                            onClick={() => decrease(product.id)}
+                            onClick={() => dispatch(decrease(product.id))}
                           >
                             −
                           </button>
@@ -70,7 +87,7 @@ function Cart() {
                           <button
                             type="button"
                             className="qty-btn"
-                            onClick={() => increase(product.id)}
+                            onClick={() => dispatch(increase(product.id))}
                           >
                             +
                           </button>
@@ -83,8 +100,8 @@ function Cart() {
                       </td>
                       <td className="cart_delete">
                         <button
-                          className="cart_quantity_delete"
-                          onClick={() => remove(product.id)}
+                          className="cart_quantity_delete btn btn-default"
+                          onClick={() => dispatch(remove(product.id))}
                         >
                           <i className="fa fa-times"> Remove</i>
                         </button>
@@ -95,8 +112,18 @@ function Cart() {
               </tbody>
             </table>
 
-            <section id="do_action">
-              <div className="container">
+            <div className="row">
+              <button
+                className="btn btn-danger pull-right"
+                style={{ margin: "20px" }}
+                onClick={() => dispatch(clearCart())}
+              >
+                Clear cart
+              </button>
+            </div>
+
+            <section id="do_action" style={{ margin: "10px" }}>
+              <div className="">
                 <div className="heading">
                   <h3>What would you like to do next?</h3>
                   <p>
@@ -105,7 +132,7 @@ function Cart() {
                   </p>
                 </div>
                 <div className="row">
-                  <div className="col-sm-6">
+                  {/* <div className="col-sm-6">
                     <div className="chose_area">
                       <ul className="user_option">
                         <li>
@@ -160,16 +187,16 @@ function Cart() {
                         Continue
                       </Link>
                     </div>
-                  </div>
-                  <div className="col-sm-6">
+                  </div> */}
+                  <div className="col-sm-12">
                     <div className="total_area">
                       <ul>
-                        <li>
+                        {/* <li>
                           Cart Sub Total <span>$59</span>
                         </li>
                         <li>
                           Eco Tax <span>$2</span>
-                        </li>
+                        </li> */}
                         <li>
                           Shipping Cost <span>Free</span>
                         </li>

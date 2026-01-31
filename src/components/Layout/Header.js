@@ -1,13 +1,13 @@
 import { Link } from "react-router-dom";
 import logo from "../../assets/images/home/logo.png";
 import { useAuth } from "../../context/AuthContext";
-import { useCart } from "../../context/CartContext";
-import { useWishList } from "../../context/WishListContext";
+import { useSelector } from "react-redux";
 function Header() {
   const isLogin = !!localStorage.getItem("user");
   const { logout } = useAuth();
-  const { cartCount } = useCart();
-  const { wishListCount } = useWishList();
+  const { cartCount } = useSelector((state) => state.cart);
+  const { wishListCount } = useSelector((state) => state.wishlist);
+
   return (
     <header id="header">
       <div className="header_top">

@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 import { home } from "./api/products";
 import { Link, useSearchParams } from "react-router-dom";
-import { useCart } from "./context/CartContext";
-import { useWishList } from "./context/WishListContext";
-import { toast } from "react-toastify";
+import { useDispatch } from "react-redux";
+import { addToCart } from "./store/cartSlice";
+import { addToWishList } from "./store/wishlistSlice";
 function Home() {
   const [featuredProducts, setFeaturedProducts] = useState([]);
   const [recommendProducts, setRecommendProducts] = useState([]);
@@ -34,8 +34,7 @@ function Home() {
       ? `http://ecommerce-shop.test/storage/products/full/${product.images[0].image}`
       : "";
 
-  const { addToCart } = useCart();
-  const { addToWishList } = useWishList();
+  const dispatch = useDispatch();
 
   return (
     <div className="col-sm-9 padding-right">
@@ -59,7 +58,7 @@ function Home() {
                       <p>{product.name}</p>
                     </Link>
                     <button
-                      onClick={() => addToCart(product)}
+                      onClick={() => dispatch(addToCart(product))}
                       className="btn btn-default add-to-cart"
                     >
                       <i className="fa fa-shopping-cart" /> Add to cart
@@ -73,7 +72,7 @@ function Home() {
                         <p>{product.name}</p>
                       </Link>
                       <button
-                        onClick={() => addToCart(product)}
+                        onClick={() => dispatch(addToCart(product))}
                         className="btn btn-default add-to-cart"
                       >
                         <i className="fa fa-shopping-cart" /> Add to cart
@@ -85,7 +84,7 @@ function Home() {
                 <div className="choose">
                   <ul className="nav nav-pills nav-justified">
                     <li>
-                      <button onClick={() => addToWishList(product)}>
+                      <button onClick={() => dispatch(addToWishList(product))}>
                         <i className="fa fa-plus-square" /> Add to wishlist
                       </button>
                     </li>
