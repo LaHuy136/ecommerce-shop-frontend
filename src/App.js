@@ -7,6 +7,10 @@ import MenuLeft from "./components/Layout/MenuLeft";
 import Footer from "./components/Layout/Footer";
 import { useLocation } from "react-router-dom";
 import MenuAccount from "./components/Layout/MenuAccount";
+import { useDispatch } from "react-redux";
+import { useEffect } from "react";
+import { fetchCartProducts } from "./store/cartSlice";
+import { fetchWishListProducts } from "./store/wishlistSlice";
 
 function App(props) {
   const location = useLocation();
@@ -18,6 +22,13 @@ function App(props) {
   );
 
   const hideMenuLeft = location.pathname.includes("/account");
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchCartProducts());
+    dispatch(fetchWishListProducts());
+  }, [dispatch]);
 
   return (
     <>

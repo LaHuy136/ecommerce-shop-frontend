@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { shop } from "../../api/products";
-import { useWishList } from "../../context/WishListContext";
-import { useCart } from "../../context/CartContext";
-
+import { useDispatch } from "react-redux";
+import { addToCart } from "../../store/cartSlice";
+import { addToWishList } from "../../store/wishlistSlice";
 function Shop() {
   const [products, setProducts] = useState([]);
   const [pagination, setPagination] = useState(null);
@@ -30,8 +30,11 @@ function Shop() {
     fetchProducts(currentPage);
   }, [currentPage]);
 
-  const { addToCart } = useCart();
-  const { addToWishList } = useWishList();
+  const dispatch = useDispatch();
+  const renderImage = (product) =>
+    product.images?.[0]?.image
+      ? `http://ecommerce-shop.test/storage/products/full/${product.images[0].image}`
+      : "";
 
   return (
     <div className="col-sm-9 padding-right">
@@ -42,17 +45,11 @@ function Shop() {
             <div className="product-image-wrapper">
               <div className="single-products">
                 <div className="productinfo text-center">
-                  <img
-                    src={
-                      "http://ecommerce-shop.test/storage/products/full/" +
-                      product.images[0].image
-                    }
-                    alt="Product Image..."
-                  />
+                  <img src={renderImage(product)} alt={product.name} />
                   <h2>${product.price}</h2>
                   <p>{product.name}</p>
                   <button
-                    onClick={() => addToCart(product)}
+                    onClick={() => dispatch(addToCart(product))}
                     className="btn btn-default add-to-cart"
                   >
                     <i className="fa fa-shopping-cart" /> Add to cart
@@ -65,7 +62,7 @@ function Shop() {
                       <p>{product.name}</p>
                     </Link>
                     <button
-                      onClick={() => addToCart(product)}
+                      onClick={() => dispatch(addToCart(product))}
                       className="btn btn-default add-to-cart"
                     >
                       <i className="fa fa-shopping-cart" /> Add to cart
@@ -76,7 +73,7 @@ function Shop() {
               <div className="choose">
                 <ul className="nav nav-pills nav-justified">
                   <li>
-                    <button onClick={() => addToWishList(product)}>
+                    <button onClick={() => dispatch(addToWishList(product))}>
                       <i className="fa fa-plus-square" /> Add to wishlist
                     </button>
                   </li>
