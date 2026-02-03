@@ -38,7 +38,7 @@ function App(props) {
           <div className="row">
             {!shouldHideMenu && (hideMenuLeft ? <MenuAccount /> : <MenuLeft />)}
             {props.children}
-            <ToastContainer position="top-right" autoClose={3000} />
+            <ToastContainer position="bottom-right" autoClose={2000} />
           </div>
         </div>
       </section>
