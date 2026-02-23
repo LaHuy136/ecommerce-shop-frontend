@@ -170,7 +170,7 @@ function ProductForm({
                 <ul>
                   <li>
                     <img
-                      src={`http://ecommerce-shop.test/storage/products/85x84/${img.image}`}
+                      src={`http://ecommerce-shop-backend.test/storage/products/85x84/${img.image}`}
                       alt="Product Image"
                       className="img-thumbnail"
                     />

@@ -81,7 +81,7 @@ function Product() {
                       <Link to={`/account/product/${product.id}/edit`}>
                         <img
                           src={
-                            "http://ecommerce-shop.test/storage/products/85x84/" +
+                            "http://ecommerce-shop-backend.test/storage/products/85x84/" +
                             product.images[0].image
                           }
                           alt="Image Product"

@@ -143,7 +143,7 @@ function Account() {
         <img
           src={
             user?.avatar
-              ? "http://ecommerce-shop.test/storage/" + user.avatar
+              ? "http://ecommerce-shop-backend.test/storage/" + user.avatar
               : avatarDefault
           }
           className="rounded-circle"
