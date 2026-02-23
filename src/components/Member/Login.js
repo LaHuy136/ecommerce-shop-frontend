@@ -125,9 +125,9 @@ function Login() {
                 <label htmlFor="password">Password</label>
               </div>
               <div className="col-sm-3">
-                <a href="#" className="pull-right">
+                <Link to="" className="pull-right">
                   Forgot password ?
-                </a>
+                </Link>
               </div>
             </div>
             <input

@@ -58,7 +58,7 @@ export const CartProvider = ({ children }) => {
 
   useEffect(() => {
     fetchCartProducts();
-  }, []);
+  }, [fetchCartProducts]);
 
   const getCartCount = (products) => {
     return products.reduce((sum, p) => sum + p.quantity, 0);
