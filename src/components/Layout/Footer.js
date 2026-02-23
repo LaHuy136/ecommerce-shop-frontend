@@ -3,6 +3,7 @@ import iframe2 from "../../assets/images/home/iframe2.png";
 import iframe3 from "../../assets/images/home/iframe3.png";
 import iframe4 from "../../assets/images/home/iframe4.png";
 import map from "../../assets/images/home/map.png";
+import { Link } from "react-router-dom";
 function Footer() {
   return (
     <footer id="footer">
@@ -23,14 +24,14 @@ function Footer() {
             <div className="col-sm-7">
               <div className="col-sm-3">
                 <div className="video-gallery text-center">
-                  <a href="#">
+                  <Link>
                     <div className="iframe-img">
                       <img src={iframe1} alt="" />
                     </div>
                     <div className="overlay-icon">
                       <i className="fa fa-play-circle-o"></i>
                     </div>
-                  </a>
+                  </Link>
                   <p>Circle of Hands</p>
                   <h2>24 DEC 2014</h2>
                 </div>
@@ -38,14 +39,14 @@ function Footer() {
 
               <div className="col-sm-3">
                 <div className="video-gallery text-center">
-                  <a href="#">
+                  <Link>
                     <div className="iframe-img">
                       <img src={iframe2} alt="" />
                     </div>
                     <div className="overlay-icon">
                       <i className="fa fa-play-circle-o"></i>
                     </div>
-                  </a>
+                  </Link>
                   <p>Circle of Hands</p>
                   <h2>24 DEC 2014</h2>
                 </div>
@@ -53,14 +54,14 @@ function Footer() {
 
               <div className="col-sm-3">
                 <div className="video-gallery text-center">
-                  <a href="#">
+                  <Link>
                     <div className="iframe-img">
                       <img src={iframe3} alt="" />
                     </div>
                     <div className="overlay-icon">
                       <i className="fa fa-play-circle-o"></i>
                     </div>
-                  </a>
+                  </Link>
                   <p>Circle of Hands</p>
                   <h2>24 DEC 2014</h2>
                 </div>
@@ -68,14 +69,14 @@ function Footer() {
 
               <div className="col-sm-3">
                 <div className="video-gallery text-center">
-                  <a href="#">
+                  <Link>
                     <div className="iframe-img">
                       <img src={iframe4} alt="" />
                     </div>
                     <div className="overlay-icon">
                       <i className="fa fa-play-circle-o"></i>
                     </div>
-                  </a>
+                  </Link>
                   <p>Circle of Hands</p>
                   <h2>24 DEC 2014</h2>
                 </div>
@@ -99,19 +100,19 @@ function Footer() {
                 <h2>Service</h2>
                 <ul className="nav nav-pills nav-stacked">
                   <li>
-                    <a href="#">Online Help</a>
+                    <Link>Online Help</Link>
                   </li>
                   <li>
-                    <a href="#">Contact Us</a>
+                    <Link>Contact Us</Link>
                   </li>
                   <li>
-                    <a href="#">Order Status</a>
+                    <Link>Order Status</Link>
                   </li>
                   <li>
-                    <a href="#">Change Location</a>
+                    <Link>Change Location</Link>
                   </li>
                   <li>
-                    <a href="#">FAQ’s</a>
+                    <Link>FAQ’s</Link>
                   </li>
                 </ul>
               </div>
@@ -121,19 +122,19 @@ function Footer() {
                 <h2>Quock Shop</h2>
                 <ul className="nav nav-pills nav-stacked">
                   <li>
-                    <a href="#">T-Shirt</a>
+                    <Link>T-Shirt</Link>
                   </li>
                   <li>
-                    <a href="#">Mens</a>
+                    <Link>Mens</Link>
                   </li>
                   <li>
-                    <a href="#">Womens</a>
+                    <Link>Womens</Link>
                   </li>
                   <li>
-                    <a href="#">Gift Cards</a>
+                    <Link>Gift Cards</Link>
                   </li>
                   <li>
-                    <a href="#">Shoes</a>
+                    <Link>Shoes</Link>
                   </li>
                 </ul>
               </div>
@@ -143,19 +144,19 @@ function Footer() {
                 <h2>Policies</h2>
                 <ul className="nav nav-pills nav-stacked">
                   <li>
-                    <a href="#">Terms of Use</a>
+                    <Link>Terms of Use</Link>
                   </li>
                   <li>
-                    <a href="#">Privecy Policy</a>
+                    <Link>Privecy Policy</Link>
                   </li>
                   <li>
-                    <a href="#">Refund Policy</a>
+                    <Link>Refund Policy</Link>
                   </li>
                   <li>
-                    <a href="#">Billing System</a>
+                    <Link>Billing System</Link>
                   </li>
                   <li>
-                    <a href="#">Ticket System</a>
+                    <Link>Ticket System</Link>
                   </li>
                 </ul>
               </div>
@@ -165,19 +166,19 @@ function Footer() {
                 <h2>About Shopper</h2>
                 <ul className="nav nav-pills nav-stacked">
                   <li>
-                    <a href="#">Company Information</a>
+                    <Link>Company Information</Link>
                   </li>
                   <li>
-                    <a href="#">Careers</a>
+                    <Link>Careers</Link>
                   </li>
                   <li>
-                    <a href="#">Store Location</a>
+                    <Link>Store Location</Link>
                   </li>
                   <li>
-                    <a href="#">Affillate Program</a>
+                    <Link>Affillate Program</Link>
                   </li>
                   <li>
-                    <a href="#">Copyright</a>
+                    <Link>Copyright</Link>
                   </li>
                 </ul>
               </div>
@@ -210,9 +211,9 @@ function Footer() {
             <p className="pull-right">
               Designed by{" "}
               <span>
-                <a target="_blank" href="http://www.themeum.com">
+                <Link target="_blank" to="http://www.themeum.com">
                   Themeum
-                </a>
+                </Link>
               </span>
             </p>
           </div>

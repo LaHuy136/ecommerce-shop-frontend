@@ -13,7 +13,7 @@ function Account() {
 
   useEffect(() => {
     if (!user && !loading) navigate("/login");
-  }, [user, loading]);
+  }, [user, loading, navigate]);
 
   const initialValues = {
     email: "",
@@ -60,7 +60,7 @@ function Account() {
       password: "",
       password_confirmation: "",
     });
-  }, [profile]);
+  }, [profile, setInputs]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();

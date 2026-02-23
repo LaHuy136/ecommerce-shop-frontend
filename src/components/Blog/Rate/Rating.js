@@ -1,7 +1,7 @@
 import StarRatings from "react-star-ratings";
 import { toast } from "react-toastify";
 import { getRating, ratingBlog } from "../../../api/blogs";
-import { useEffect } from "react";
+import { useEffect, useCallback } from "react";
 const { useState } = require("react");
 
 function Rate({ blogId, isLogin, avgRating, rateCount }) {
@@ -13,7 +13,7 @@ function Rate({ blogId, isLogin, avgRating, rateCount }) {
     setCount(Number(rateCount) || 0);
   }, [avgRating, rateCount]);
 
-  const fetchRating = async () => {
+  const fetchRating = useCallback(async () => {
     try {
       const response = await getRating();
       const rates = response.data;
@@ -44,11 +44,11 @@ function Rate({ blogId, isLogin, avgRating, rateCount }) {
         toast.error("Network error, please check your connection");
       }
     }
-  };
+  }, [blogId]);
 
   useEffect(() => {
     fetchRating();
-  }, [blogId]);
+  }, [blogId, fetchRating]);
 
   const handleRating = async (newRating) => {
     if (!isLogin) {

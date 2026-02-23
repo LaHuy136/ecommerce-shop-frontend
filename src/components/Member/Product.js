@@ -9,7 +9,7 @@ function Product() {
   const navigate = useNavigate();
   useEffect(() => {
     if (!user && !loading) navigate("/login");
-  }, [user, loading]);
+  }, [user, loading, navigate]);
 
   const [products, setProducts] = useState({});
   const [pagination, setPagination] = useState(null);
@@ -84,7 +84,7 @@ function Product() {
                             "http://ecommerce-shop-backend.test/storage/products/85x84/" +
                             product.images[0].image
                           }
-                          alt="Image Product"
+                          alt={product.name}
                         />
                       </Link>
                     </td>

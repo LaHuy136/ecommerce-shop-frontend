@@ -69,7 +69,7 @@ function Edit() {
       old_images: product.images || [],
       delete_images: [],
     });
-  }, [product]);
+  }, [product, setInputs]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();

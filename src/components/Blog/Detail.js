@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import { show, showComment, storeComment } from "../../api/blogs";
 import { formatDate, formatTime } from "../../utils/Date";
@@ -78,13 +78,6 @@ function Show() {
     });
     showBlog(id);
   }, [id]);
-
-  // const scrollToCommentBox = () => {
-  //   textareaRef.current?.scrollIntoView({
-  //     behavior: "smooth",
-  //     block: "center",
-  //   });
-  // };
 
   const handleSubmit = async (e) => {
     e.preventDefault();

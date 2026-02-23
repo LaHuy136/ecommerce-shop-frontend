@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import { show } from "../../api/products";
@@ -73,7 +73,7 @@ function ProductDetail() {
 
             <img
               src={`${imgRender}/full/${selectedImage}`}
-              alt="Image Product"
+              alt={product.name}
             />
           </div>
 
@@ -157,24 +157,24 @@ function ProductDetail() {
         <div className="col-sm-12">
           <ul className="nav nav-tabs">
             <li>
-              <a href="#details" data-toggle="tab">
+              <Link to="#details" data-toggle="tab">
                 Details
-              </a>
+              </Link>
             </li>
             <li>
-              <a href="#companyprofile" data-toggle="tab">
+              <Link to="#companyprofile" data-toggle="tab">
                 Company Profile
-              </a>
+              </Link>
             </li>
             <li>
-              <a href="#tag" data-toggle="tab">
+              <Link to="#tag" data-toggle="tab">
                 Tag
-              </a>
+              </Link>
             </li>
             <li className="active">
-              <a href="#reviews" data-toggle="tab">
+              <Link to="#reviews" data-toggle="tab">
                 Reviews (5)
-              </a>
+              </Link>
             </li>
           </ul>
         </div>
@@ -396,19 +396,19 @@ function ProductDetail() {
             <div className="col-sm-12">
               <ul>
                 <li>
-                  <a href="">
+                  <Link to="">
                     <i className="fa fa-user"></i>EUGEN
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a href="">
+                  <Link to="">
                     <i className="fa fa-clock-o"></i>12:41 PM
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a href="">
+                  <Link to="">
                     <i className="fa fa-calendar-o"></i>31 DEC 2014
-                  </a>
+                  </Link>
                 </li>
               </ul>
               <p>
