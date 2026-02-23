@@ -11,14 +11,15 @@ import gallery4 from "../../assets/images/home/gallery4.jpg";
 import ZoomImg from "./ZoomImg";
 import CarouselImg from "./Carouselmg";
 import "react-multi-carousel/lib/styles.css";
-import { useCart } from "../../context/CartContext";
+import { useDispatch } from "react-redux";
+import { addToCart } from "../../store/cartSlice";
 
 function ProductDetail() {
   const [product, setProduct] = useState({ images: [] });
   const [selectedImage, setSelectedImage] = useState(null);
   const [showZoom, setShowZoom] = useState(false);
-  const imgRender = "http://ecommerce-shop.test/storage/products";
-  const { addToCart } = useCart();
+  const imgRender = "http://ecommerce-shop-backend.test/storage/products";
+  const dispatch = useDispatch();
 
   const { id } = useParams();
 
@@ -112,7 +113,7 @@ function ProductDetail() {
 
                 <button
                   type="button"
-                  onClick={() => addToCart(product)}
+                  onClick={() => dispatch(addToCart(product))}
                   className="btn btn-default add-to-cart"
                 >
                   <i className="fa fa-shopping-cart"></i>

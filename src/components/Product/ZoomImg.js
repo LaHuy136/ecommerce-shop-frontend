@@ -9,7 +9,7 @@ function ZoomImg({ image, onClose }) {
           ✕
         </span>
         <img
-          src={`http://ecommerce-shop.test/storage/products/full/${image}`}
+          src={`http://ecommerce-shop-backend.test/storage/products/full/${image}`}
           alt="Zoom Product"
         />
       </div>

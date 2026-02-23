@@ -56,7 +56,7 @@ function Cart() {
                     <tr key={product.id}>
                       <td className="cart_product">
                         <img
-                          src={`http://ecommerce-shop.test/storage/products/85x84/${product.images[0].image}`}
+                          src={`http://ecommerce-shop-backend.test/storage/products/85x84/${product.images[0].image}`}
                           alt={product.name}
                         />
                       </td>

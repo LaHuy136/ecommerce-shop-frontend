@@ -31,7 +31,7 @@ function Home() {
 
   const renderImage = (product) =>
     product.images?.[0]?.image
-      ? `http://ecommerce-shop.test/storage/products/full/${product.images[0].image}`
+      ? `http://ecommerce-shop-backend.test/storage/products/full/${product.images[0].image}`
       : "";
 
   const dispatch = useDispatch();
