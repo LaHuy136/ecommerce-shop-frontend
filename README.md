@@ -115,6 +115,6 @@ MySQL Database
 
 # Author
 
-**Le Van Nang**
+**La Dang Huy**
 
 Frontend Developer (ReactJS) / Backend Developer (Laravel)
